@@ -4,7 +4,8 @@ layout.py
 import curses
 import signal
 import time
-from array import *
+import random
+
 
 English = dict()
 English['lower'] = ['`1234567890-=',
@@ -41,6 +42,10 @@ class Layout(object):
         for line in English['lower']:
             print(line)
 
+    def pick_random(self, keyboard):
+        flat_list = [item for sublist in keyboard for item in sublist]
+        return random.choice(flat_list)
+
     def display_keys(self):
         self.dump_English()
 
@@ -51,7 +56,7 @@ class Layout(object):
 def main():
     keys = Layout()
     signal.signal(signal.SIGINT, keys.__del__)
-    keys.display_keys()
+    print(keys.pick_random(English['lower']))
 
 
 if __name__ == "__main__":
