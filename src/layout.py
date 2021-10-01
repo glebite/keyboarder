@@ -37,8 +37,12 @@ class Layout(object):
         self.screen.clear()
         time.sleep(10)
 
+    def dump_English(self):
+        for line in English['lower']:
+            print(line)
+
     def display_keys(self):
-        pass
+        self.dump_English()
 
     def __del__(self):
         curses.endwin()
