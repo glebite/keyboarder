@@ -32,15 +32,11 @@ class Layout(object):
     """
     """
     def __init__(self):
-        self.screen = curses.initscr()
-        curses.noecho()
-        curses.cbreak()
-        self.screen.clear()
-        time.sleep(10)
-
-    def dump_English(self):
-        for line in English['lower']:
-            print(line)
+        # self.screen = curses.initscr()
+        # curses.noecho()
+        # curses.cbreak()
+        # self.screen.clear()
+        pass
 
     def pick_random(self, keyboard):
         flat_list = [item for sublist in keyboard for item in sublist]
@@ -52,18 +48,31 @@ class Layout(object):
                 return (i, row.find(char))
         return (-1, -1)
 
-    def display_keys(self):
-        self.dump_English()
+    def boxit(self, keyboard):
+        """
+        ----------------------------------
+        |`|1|2|3|4|5|6|7|8|9|0|-|=|
+        ----------------------------------
+        13
+        13
+        11
+        10
+        """
+        for i, row in enumerate(keyboard):
+            for char in row:
+                print('+-', end='')
+            print('+')
 
     def __del__(self):
-        curses.endwin()
-
+        # curses.endwin()
+        pass
 
 def main():
     keys = Layout()
     signal.signal(signal.SIGINT, keys.__del__)
-    matching = keys.find_keyat(English['lower'], ',')
-    print(Farsi['lower'][matching[0]][matching[1]])
+    # matching = keys.find_keyat(English['lower'], '\\')
+    # print(Farsi['lower'][matching[0]][matching[1]])
+    keys.boxit(English['lower'])
 
 
 if __name__ == "__main__":
