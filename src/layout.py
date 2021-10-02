@@ -46,6 +46,12 @@ class Layout(object):
         flat_list = [item for sublist in keyboard for item in sublist]
         return random.choice(flat_list)
 
+    def find_keyat(self, keyboard, char):
+        for i, row in enumerate(keyboard):
+            if char in row:
+                return (i, row.find(char))
+        return (-1, -1)
+
     def display_keys(self):
         self.dump_English()
 
@@ -56,7 +62,8 @@ class Layout(object):
 def main():
     keys = Layout()
     signal.signal(signal.SIGINT, keys.__del__)
-    print(keys.pick_random(English['lower']))
+    matching = keys.find_keyat(English['lower'], ',')
+    print(Farsi['lower'][matching[0]][matching[1]])
 
 
 if __name__ == "__main__":
