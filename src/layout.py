@@ -32,11 +32,10 @@ class Layout(object):
     """
     """
     def __init__(self):
-        # self.screen = curses.initscr()
-        # curses.noecho()
-        # curses.cbreak()
-        # self.screen.clear()
-        pass
+        self.screen = curses.initscr()
+        curses.noecho()
+        curses.cbreak()
+        self.screen.clear()
 
     def pick_random(self, keyboard):
         flat_list = [item for sublist in keyboard for item in sublist]
@@ -64,16 +63,26 @@ class Layout(object):
             print('+')
 
     def __del__(self):
-        # curses.endwin()
+        curses.endwin()
         pass
+
+    def process_key(self):
+        while True:
+            k = self.screen.get_wch()
+            matching = self.find_keyat(English['lower'], k)
+            print(Farsi['lower'][matching[0]][matching[1]])
+
 
 def main():
     keys = Layout()
     signal.signal(signal.SIGINT, keys.__del__)
     # matching = keys.find_keyat(English['lower'], '\\')
     # print(Farsi['lower'][matching[0]][matching[1]])
-    keys.boxit(English['lower'])
+    # keys.boxit(English['lower'])
+    x = keys.process_key()
+    del keys
+    return(x)
 
 
 if __name__ == "__main__":
-    main()
+    print(main())
