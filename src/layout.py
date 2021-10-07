@@ -105,12 +105,37 @@ def main():
     signal.signal(signal.SIGINT, keys.__del__)
     # matching = keys.find_keyat(English['lower'], '\\')
     # print(Farsi['lower'][matching[0]][matching[1]])
-    box = keys.boxit('SHIFT')
+
+    box = keys.boxit('')
+    keys.placeit(3, 1, box)
+    pos = 3
+    for char in English['lower'][0]:
+        box = keys.boxit(char)
+        keys.placeit(pos, 1, box)
+        pos += 3
+
+    box = keys.boxit('TAB')
     keys.placeit(1, 4, box)
+    pos = 7
+    for char in English['lower'][1]:
+        box = keys.boxit(char)
+        keys.placeit(pos, 4, box)
+        pos += 3    
+    
+    box = keys.boxit('LOCK')
+    keys.placeit(1, 7, box)
+    pos = 7
+    for char in English['lower'][2]:
+        box = keys.boxit(char)
+        keys.placeit(pos, 7, box)
+        pos += 3    
+
+    box = keys.boxit('SHIFT')
+    keys.placeit(1, 10, box)
     pos = 8
     for char in English['lower'][3]:
         box = keys.boxit(char)
-        keys.placeit(pos, 4, box)
+        keys.placeit(pos, 10, box)
         pos += 3
 
     keys.screen.refresh()
