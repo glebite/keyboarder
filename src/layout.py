@@ -99,44 +99,46 @@ class Layout(object):
             matching = self.find_keyat(English['lower'], k)
             print(Farsi['lower'][matching[0]][matching[1]])
 
+    def show_keyboard(self):
+        box = self.screen.boxit('')
+        self.screen.placeit(3, 1, box)
+        pos = 3
+        for char in English['lower'][0]:
+            box = self.screen.boxit(char)
+            self.screen.placeit(pos, 1, box)
+            pos += 3
+
+            box = self.screen.boxit('TAB')
+            self.screen.placeit(1, 4, box)
+            pos = 7
+            for char in English['lower'][1]:
+                box = self.screen.boxit(char)
+                self.screen.placeit(pos, 4, box)
+                pos += 3
+                box = self.boxit('LOCK')
+                self.screen.placeit(1, 7, box)
+            pos = 7
+            for char in English['lower'][2]:
+                box = self.screen.boxit(char)
+            self.screen.placeit(pos, 7, box)
+            pos += 3    
+            
+            box = self.screen.boxit('SHIFT')
+            self.screen.placeit(1, 10, box)
+            pos = 8
+            for char in English['lower'][3]:
+                box = self.screen.boxit(char)
+                self.screen.placeit(pos, 10, box)
+                pos += 3        
 
 def main():
     keys = Layout()
     signal.signal(signal.SIGINT, keys.__del__)
     # matching = keys.find_keyat(English['lower'], '\\')
     # print(Farsi['lower'][matching[0]][matching[1]])
+    keys.show_keyboard()
 
-    box = keys.boxit('')
-    keys.placeit(3, 1, box)
-    pos = 3
-    for char in English['lower'][0]:
-        box = keys.boxit(char)
-        keys.placeit(pos, 1, box)
-        pos += 3
-
-    box = keys.boxit('TAB')
-    keys.placeit(1, 4, box)
-    pos = 7
-    for char in English['lower'][1]:
-        box = keys.boxit(char)
-        keys.placeit(pos, 4, box)
-        pos += 3    
-    
-    box = keys.boxit('LOCK')
-    keys.placeit(1, 7, box)
-    pos = 7
-    for char in English['lower'][2]:
-        box = keys.boxit(char)
-        keys.placeit(pos, 7, box)
-        pos += 3    
-
-    box = keys.boxit('SHIFT')
-    keys.placeit(1, 10, box)
-    pos = 8
-    for char in English['lower'][3]:
-        box = keys.boxit(char)
-        keys.placeit(pos, 10, box)
-        pos += 3
+ 
 
     keys.screen.refresh()
     time.sleep(10)
