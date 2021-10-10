@@ -100,36 +100,37 @@ class Layout(object):
             print(Farsi['lower'][matching[0]][matching[1]])
 
     def show_keyboard(self):
-        box = self.screen.boxit('')
-        self.screen.placeit(3, 1, box)
+        box = self.boxit('')
+        self.placeit(3, 1, box)
         pos = 3
         for char in English['lower'][0]:
-            box = self.screen.boxit(char)
-            self.screen.placeit(pos, 1, box)
+            box = self.boxit(char)
+            self.placeit(pos, 1, box)
             pos += 3
 
-            box = self.screen.boxit('TAB')
-            self.screen.placeit(1, 4, box)
-            pos = 7
-            for char in English['lower'][1]:
-                box = self.screen.boxit(char)
-                self.screen.placeit(pos, 4, box)
-                pos += 3
-                box = self.boxit('LOCK')
-                self.screen.placeit(1, 7, box)
-            pos = 7
-            for char in English['lower'][2]:
-                box = self.screen.boxit(char)
-            self.screen.placeit(pos, 7, box)
-            pos += 3    
-            
-            box = self.screen.boxit('SHIFT')
-            self.screen.placeit(1, 10, box)
-            pos = 8
-            for char in English['lower'][3]:
-                box = self.screen.boxit(char)
-                self.screen.placeit(pos, 10, box)
-                pos += 3        
+        box = self.boxit('TAB')
+        self.placeit(1, 4, box)
+        pos = 7
+        for char in English['lower'][1]:
+            box = self.boxit(char)
+            self.placeit(pos, 4, box)
+            pos += 3
+        box = self.boxit('LOCK')
+        self.placeit(1, 7, box)
+        pos = 7
+        for char in English['lower'][2]:
+            box = self.boxit(char)
+            self.placeit(pos, 7, box)
+            pos += 3
+
+        box = self.boxit('SHIFT')
+        self.placeit(1, 10, box)
+        pos = 8
+        for char in English['lower'][3]:
+            box = self.boxit(char)
+            self.placeit(pos, 10, box)
+            pos += 3
+
 
 def main():
     keys = Layout()
@@ -137,9 +138,6 @@ def main():
     # matching = keys.find_keyat(English['lower'], '\\')
     # print(Farsi['lower'][matching[0]][matching[1]])
     keys.show_keyboard()
-
- 
-
     keys.screen.refresh()
     time.sleep(10)
     # x = keys.process_key()
