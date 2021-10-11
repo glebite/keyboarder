@@ -12,6 +12,8 @@ class keyboard(object):
         """
         self.key_file = key_file
         self.layout = list()
+        self.position = dict()
+        self.pos_map = dict()
 
     def process_rows(self, reader):
         """process_rows - process rows of CSV data and populate the keyboard
@@ -19,7 +21,12 @@ class keyboard(object):
         temp_row = list()
         cur_row = -1
         for row in reader:
+            print(row)
             key = Key(*row)
+            self.position[key.upper] = (key.row, key.column)
+            self.position[key.lower] = (key.row, key.column)
+            self.pos_map[(key.row, key.column)] = {key.lower, key.upper}
+            
             if key.row != cur_row:
                 self.layout.append(temp_row)
                 temp_row = list()
@@ -35,12 +42,19 @@ class keyboard(object):
             reader = csv.reader(csvfile, delimiter=',', quotechar='\'')
             self.process_rows(reader)
 
+    def get_key_position(self, character):
+        return self.position[character]
+
+    def get_char_from_position(self, row, column):
+        return self.pos_map[(row, column)]
+
 
 def main():
-    x = keyboard('English.csv')
-    for row in x.read_config():
-        if len(row):
-            print(row[0])
+    x = keyboard('Farsi.csv')
+    x.read_config()
+
+    print(x.get_key_position('ت'))
+    print(x.get_char_from_position(3, 3))
 
 
 if __name__ == "__main__":
