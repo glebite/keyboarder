@@ -2,13 +2,13 @@ import keyboard
 import curses
 
 
-def main():
+def main(lang1, lang2):
     """
     """
-    f = keyboard.keyboard('Farsi.csv')
-    e = keyboard.keyboard('English.csv')
-    e.read_config()
-    f.read_config()
+    target = keyboard.keyboard(lang1)
+    host = keyboard.keyboard(lang2)
+    host.read_config()
+    target.read_config()
     stdscr = curses.initscr()
     curses.cbreak()
     stdscr.keypad(1)
@@ -16,9 +16,10 @@ def main():
     key = ''
     while key != ord('q'):
         key = stdscr.getch()
-        row, column = e.get_key_position(chr(key))
-        print(f.get_char_from_position(row, column), end='')
+        row, column = host.get_key_position(chr(key))
+        lower, upper = target.get_char_from_position(row, column)
+        stdscr.addch(upper)
 
 
 if __name__ == "__main__":
-    main()
+    main('Farsi.csv', 'English.csv')
