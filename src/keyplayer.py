@@ -1,5 +1,12 @@
+"""keyplayer.py - experimenting game stuff...
+"""
 import keyboard
 import curses
+
+
+class KeyPlayer(object):
+    def __init__(self):
+        pass
 
 
 def main(lang1, lang2):
