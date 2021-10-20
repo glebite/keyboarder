@@ -34,6 +34,17 @@ class KeyPlayer(object):
                 print(e)
         curses.endwin()
 
+    def debugging(self):
+        """
+        """
+        self.host.read_config()
+        self.target.read_config()
+        for rows in self.host.layout:
+            for key in rows:
+                row, column = self.host.get_key_position(key.lower)
+                print(row, column, key.lower, self.target.get_char_from_position(row, column))
+
+
     def clear_score(self):
         self.key_presses = 0
         self.key_correct = 0
@@ -43,7 +54,7 @@ def main(lang1, lang2):
     """
     """
     x = KeyPlayer(lang1, lang2)
-    x.sample_test()
+    x.debugging()
 
 
 if __name__ == "__main__":
