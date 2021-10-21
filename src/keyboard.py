@@ -53,12 +53,16 @@ class keyboard(object):
             self.process_rows(reader)
 
     def get_key_position(self, character):
+        """get_key_position - 
+        """
         if character in self.position:
             return self.position[character]
         else:
             return (-1, -1)
 
     def get_char_from_position(self, row, column):
+        """get_char_from_position - 
+        """
         return self.pos_map[(row, column)]
 
 
