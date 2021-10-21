@@ -18,6 +18,15 @@ class keyboard(object):
 
     def process_rows(self, reader):
         """process_rows - process rows of CSV data and populate the keyboard
+
+        Params:
+        reader - CSVReader - used to retrieve lines
+
+        Returns:
+        n/a
+
+        Raises:
+        n/a
         """
         temp_row = list()
         cur_row = -1
@@ -37,7 +46,7 @@ class keyboard(object):
         self.rows = key.row
 
     def read_config(self):
-        """
+        """read_config - read a keyboard file and process the data
         """
         with open(self.key_file, newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='\'')
