@@ -2,6 +2,6 @@ from key import Key
 
 
 def test_key_creation():
-    key = Key(1,1,1,'x','X')
-    if not key:
+    piece = Key(1,1,1,'x','X')
+    if not piece:
         assert False
