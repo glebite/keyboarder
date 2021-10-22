@@ -1,0 +1,14 @@
+attrs==21.2.0
+iniconfig==1.1.1
+jedi==0.18.0
+keyboard==0.13.5
+packaging==21.0
+parso==0.8.2
+pluggy==1.0.0
+pudb==2021.1
+py==1.10.0
+Pygments==2.10.0
+pyparsing==2.4.7
+pytest==6.2.5
+toml==0.10.2
+urwid==2.1.2

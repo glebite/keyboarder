@@ -1,0 +1,6 @@
+venv
+/src/*~
+/src/*pycache*
+/tests/*~
+/tests/*pycache*
+*~
