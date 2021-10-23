@@ -22,3 +22,49 @@ def test_key_upperlower():
 def test_str_output():
     piece = Key(1, 3, 1, 'y', 'Y')
     assert piece.__str__() == "1 3 1 y Y"
+
+
+def test_isvisible():
+    piece = Key(1, 3, 1, 'y', 'Y')
+    assert piece.is_visible()
+
+
+def test_is_not_visible():
+    piece = Key(1, 3, 0, 'y', 'Y')
+    assert not piece.is_visible()
+
+
+def test_range_row_low():
+    try:
+        piece = Key(-1, 3, 1, 'z', 'Z')
+        piece.is_visible()
+        assert False
+    except Exception:
+        assert True
+
+
+def test_range_row_high():
+    try:
+        piece = Key(26, 3, 1, 'z', 'Z')
+        piece.is_visible()
+        assert False
+    except Exception:
+        assert True
+
+
+def test_range_col_low():
+    try:
+        piece = Key(5, -2, 1, 'z', 'Z')
+        piece.is_visible()
+        assert False
+    except Exception:
+        assert True
+
+
+def test_range_col_high():
+    try:
+        piece = Key(5, 85, 1, 'z', 'Z')
+        piece.is_visible()
+        assert False
+    except Exception:
+        assert True

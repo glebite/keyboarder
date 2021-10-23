@@ -32,6 +32,9 @@ class Key(object):
         self.lower = lower
         self.upper = upper
 
+    def is_visible(self):
+        return self.visibility
+
     def __str__(self):
         return f'{self.row} {self.column}' \
             f' {self.visibility} {self.lower} {self.upper}'
