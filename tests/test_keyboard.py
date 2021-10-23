@@ -27,3 +27,13 @@ def test_get_char_from():
     board = Keyboard('src/English.csv')
     board.read_config()
     assert board.get_char_from_position(0, 1) == {'!', '1'}
+
+
+def test_csv_not_found():
+    board = Keyboard('src/Russian.csv')
+    try:
+        board.read_config()
+        assert False
+    except Exception as e:
+        assert True
+    
