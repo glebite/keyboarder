@@ -38,19 +38,3 @@ class Key(object):
     def __str__(self):
         return f'{self.row} {self.column}' \
             f' {self.visibility} {self.lower} {self.upper}'
-
-
-def main():
-    try:
-        x = Key(39, 10, 1, 'a', 'A')
-        print(f'{x}')
-    except AssertionError as e:
-        print(f'Caught expected exception {e}')
-    except Exception as e:
-        print(f'Caught unexpected exception {e}')
-    x = Key(10, 10, 1, 'a', 'A')
-    print(f'{x}')
-
-
-if __name__ == "__main__":
-    main()
