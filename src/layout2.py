@@ -1,11 +1,11 @@
-import keyboard
+import kboard
 import curses
 
 
 class Layout(object):
     def __init__(self, keyboard_file):
         self.keyboard_file = keyboard_file
-        self.keyboard = keyboard.keyboard(self.keyboard_file)
+        self.keyboard = kboard.Keyboard(self.keyboard_file)
         self.keyboard.read_config()
 
     def dump_keyboard(self):
