@@ -1,13 +1,13 @@
 """keyplayer.py - experimenting game stuff...
 """
-import keyboard
+import kboard
 import curses
 
 
 class KeyPlayer(object):
     def __init__(self, target_kbd, host_kbd):
-        self.target = keyboard.keyboard(target_kbd)
-        self.host = keyboard.keyboard(host_kbd)
+        self.target = kboard.Keyboard(target_kbd)
+        self.host = kboard.Keyboard(host_kbd)
         self.key_correct = 0
         self.key_presses = 0
 

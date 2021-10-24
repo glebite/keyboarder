@@ -26,7 +26,7 @@ def test_get_bad_key_position():
 def test_get_char_from():
     board = Keyboard('src/English.csv')
     board.read_config()
-    assert board.get_char_from_position(0, 1) == {'!', '1'}
+    assert board.get_char_from_position(0, 1) == ['1', '!']
 
 
 def test_csv_not_found():
@@ -35,5 +35,17 @@ def test_csv_not_found():
         board.read_config()
         assert False
     except Exception as e:
+        print(f'Examine this to be true: {e}')
         assert True
-    
+
+
+def test_mapping():
+    english = Keyboard('src/English.csv')
+    english.read_config()
+    farsi = Keyboard('src/Farsi.csv')
+    farsi.read_config()
+    row, column = english.get_key_position('k')
+    lower, upper = farsi.get_char_from_position(row, column)
+    print(lower)
+    print(upper)
+    assert lower == 'ن'

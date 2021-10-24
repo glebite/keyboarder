@@ -34,7 +34,7 @@ class Keyboard(object):
             key = Key(*row)
             self.position[key.upper] = (key.row, key.column)
             self.position[key.lower] = (key.row, key.column)
-            self.pos_map[(key.row, key.column)] = {key.lower, key.upper}
+            self.pos_map[(key.row, key.column)] = [key.lower, key.upper]
 
             if key.row != cur_row:
                 self.layout.append(temp_row)
