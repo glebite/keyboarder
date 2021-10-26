@@ -9,10 +9,11 @@ class Layout(object):
         self.keyboard.read_config()
 
     def dump_keyboard(self):
+        keys = ""
         for row in self.keyboard.layout:
             for key in row:
-                print(f'{key.lower} ', end='')
-            print('')
+                keys += f'{key.lower} '
+        return keys
 
 
 def main():
