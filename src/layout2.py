@@ -21,6 +21,14 @@ class Layout(object):
         self.keyboard = kboard.Keyboard(self.keyboard_file)
         self.keyboard.read_config()
 
+    def screen_init(self):
+        self.screen = curses.initscr()
+        curses.noecho()
+        curses.cbreak()
+
+    def __del__(self):
+        curses.endwin()
+
     def dump_keyboard(self):
         keys = ""
         for row in self.keyboard.layout:
