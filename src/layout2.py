@@ -15,18 +15,24 @@ HORIZONTAL_DOWN_T = u'\u2533'
 HORIZONTAL_UP_T = u'\u253b'
 
 
-class Layout(object):
+class Layout():
     def __init__(self, keyboard_file):
+        """Layout - layout class - probably a base class eventually
+        """
         self.keyboard_file = keyboard_file
         self.keyboard = kboard.Keyboard(self.keyboard_file)
         self.keyboard.read_config()
 
     def screen_init(self):
+        """screen_init - curses initialization method
+        """
         self.screen = curses.initscr()
         curses.noecho()
         curses.cbreak()
 
     def __del__(self):
+        """__del__ - cleanup of curses artifacts, etc...
+        """
         curses.endwin()
 
     def dump_keyboard(self):
