@@ -76,39 +76,42 @@ class Layout():
         box = self.boxit('')
         self.placeit(3, 1, box)
         pos = 3
-        for char in self.keyboard.rows[0]:
-            box = self.boxit(char)
-            self.placeit(pos, 1, box)
-            pos += 3
+        for row in self.keyboard.layout:
+            for char in row:
+                print(f'Character: {char}')
+                box = self.boxit(char)
+                self.placeit(pos, 1, box)
+                pos += 3
 
-        box = self.boxit('TAB')
-        self.placeit(1, 4, box)
-        pos = 7
-        for char in self.keyboard.rows[1]:
-            box = self.boxit(char)
-            self.placeit(pos, 4, box)
-            pos += 3
-        box = self.boxit('LOCK')
-        self.placeit(1, 7, box)
-        pos = 7
-        for char in self.keyboard.rows[2]:
-            box = self.boxit(char)
-            self.placeit(pos, 7, box)
-            pos += 3
+        # box = self.boxit('TAB')
+        # self.placeit(1, 4, box)
+        # pos = 7
+        # for char in self.keyboard.rows[1]:
+        #     box = self.boxit(char)
+        #     self.placeit(pos, 4, box)
+        #     pos += 3
+        # box = self.boxit('LOCK')
+        # self.placeit(1, 7, box)
+        # pos = 7
+        # for char in self.keyboard.rows[2]:
+        #     box = self.boxit(char)
+        #     self.placeit(pos, 7, box)
+        #     pos += 3
 
-        box = self.boxit('SHIFT')
-        self.placeit(1, 10, box)
-        pos = 8
-        for char in self.keyboard.rows[3]:
-            box = self.boxit(char)
-            self.placeit(pos, 10, box)
-            pos += 3
+        # box = self.boxit('SHIFT')
+        # self.placeit(1, 10, box)
+        # pos = 8
+        # for char in self.keyboard.rows[3]:
+        #     box = self.boxit(char)
+        #     self.placeit(pos, 10, box)
+        #     pos += 3
 
 
 def main():
     x = Layout('English.csv')
     x.screen_init()
     x.show_keyboard()
+    print("Done!")
 
 
 if __name__ == "__main__":
