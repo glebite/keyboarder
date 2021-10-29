@@ -42,10 +42,73 @@ class Layout():
                 keys += f'{key.lower} '
         return keys
 
+    def boxit(self, contents):
+        """
+        """
+        box = UPPER_LEFT_CORNER
+        for i in contents:
+            box += HORIZONTAL_BAR
+        box += UPPER_RIGHT_CORNER
+        box += "\n"
+        box += VERTICAL_BAR
+        box += contents
+        box += VERTICAL_BAR
+        box += "\n"
+        box += LOWER_LEFT_CORNER
+        for i in contents:
+            box += HORIZONTAL_BAR
+        box += LOWER_RIGHT_CORNER
+        box += "\n"
+        return box
+
+    def placeit(self, x, y, it):
+        row = y
+        col = x
+        for i, character in enumerate(it):
+            self.screen.addstr(row, col, character)
+            if character == "\n":
+                row += 1
+                col = x
+            else:
+                col += 1
+
+    def show_keyboard(self):
+        box = self.boxit('')
+        self.placeit(3, 1, box)
+        pos = 3
+        for char in self.keyboard.rows[0]:
+            box = self.boxit(char)
+            self.placeit(pos, 1, box)
+            pos += 3
+
+        box = self.boxit('TAB')
+        self.placeit(1, 4, box)
+        pos = 7
+        for char in self.keyboard.rows[1]:
+            box = self.boxit(char)
+            self.placeit(pos, 4, box)
+            pos += 3
+        box = self.boxit('LOCK')
+        self.placeit(1, 7, box)
+        pos = 7
+        for char in self.keyboard.rows[2]:
+            box = self.boxit(char)
+            self.placeit(pos, 7, box)
+            pos += 3
+
+        box = self.boxit('SHIFT')
+        self.placeit(1, 10, box)
+        pos = 8
+        for char in self.keyboard.rows[3]:
+            box = self.boxit(char)
+            self.placeit(pos, 10, box)
+            pos += 3
+
 
 def main():
     x = Layout('English.csv')
-    x.dump_keyboard()
+    x.screen_init()
+    x.show_keyboard()
 
 
 if __name__ == "__main__":
