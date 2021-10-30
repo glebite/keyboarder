@@ -78,7 +78,7 @@ class Layout():
         box = self.boxit('')
         self.placeit(3, 1, box)
         pos = 3
-        for char in self.keyboard.layout[1]:
+        for char in self.keyboard.layout[0]:
             box = self.boxit(char.lower)
             # print(pos, 1, char)
             self.placeit(pos, 1, box)
@@ -87,7 +87,7 @@ class Layout():
         box = self.boxit('TAB')
         self.placeit(1, 4, box)
         pos = 7
-        for char in self.keyboard.layout[2]:
+        for char in self.keyboard.layout[1]:
             box = self.boxit(char.lower)
             self.placeit(pos, 4, box)
             pos += 3
@@ -95,7 +95,7 @@ class Layout():
         box = self.boxit('LOCK')
         self.placeit(1, 7, box)
         pos = 7
-        for char in self.keyboard.layout[3]:
+        for char in self.keyboard.layout[2]:
             box = self.boxit(char.lower)
             self.placeit(pos, 7, box)
             pos += 3
@@ -103,7 +103,7 @@ class Layout():
         box = self.boxit('SHIFT')
         self.placeit(1, 10, box)
         pos = 8
-        for char in self.keyboard.layout[4]:
+        for char in self.keyboard.layout[3]:
             box = self.boxit(char.lower)
             self.placeit(pos, 10, box)
             pos += 3

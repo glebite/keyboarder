@@ -29,9 +29,10 @@ class Keyboard(object):
         n/a
         """
         temp_row = list()
-        cur_row = -1
+        cur_row = 0
         for row in reader:
             key = Key(*row)
+            print(key)
             self.position[key.upper] = (key.row, key.column)
             self.position[key.lower] = (key.row, key.column)
             self.pos_map[(key.row, key.column)] = [key.lower, key.upper]
@@ -49,7 +50,11 @@ class Keyboard(object):
         """read_config - read a keyboard file and process the data
         """
         with open(self.key_file, newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',', quotechar='\'')
+            reader = csv.reader(csvfile, delimiter=',',
+                                quotechar="\'",
+                                skipinitialspace=True,
+                                doublequote=False,
+                                quoting=csv.QUOTE_NONNUMERIC)
             self.process_rows(reader)
 
     def get_key_position(self, character):
