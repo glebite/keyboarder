@@ -110,7 +110,7 @@ class Layout():
 
 
 def main():
-    x = Layout('English.csv')
+    x = Layout('Farsi.csv')
     x.screen_init()
     x.show_keyboard()
     x.screen.refresh()
