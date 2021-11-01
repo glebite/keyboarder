@@ -14,6 +14,10 @@ LEFT_VERTICAL_T = u'\u2523'
 RIGHT_VERTICAL_T = u'\u252b'
 HORIZONTAL_DOWN_T = u'\u2533'
 HORIZONTAL_UP_T = u'\u253b'
+RTL = u'\u2067'
+RTLPOP = u'\u2069'
+LTRDIR = 0
+RTLDIR = 1
 
 
 class Layout():
@@ -23,6 +27,10 @@ class Layout():
         self.keyboard_file = keyboard_file
         self.keyboard = kboard.Keyboard(self.keyboard_file)
         self.keyboard.read_config()
+        if 'RTL' in keyboard_file:
+            self.direction = RTLDIR
+        else:
+            self.direction = LTRDIR
 
     def screen_init(self):
         """screen_init - curses initialization method
@@ -30,18 +38,6 @@ class Layout():
         self.screen = curses.initscr()
         curses.noecho()
         curses.cbreak()
-
-    def __del__(self):
-        """__del__ - cleanup of curses artifacts, etc...
-        """
-        curses.endwin()
-
-    def dump_keyboard(self):
-        keys = ""
-        for row in self.keyboard.layout:
-            for key in row:
-                keys += f'{key.lower} '
-        return keys
 
     def boxit(self, contents):
         """
@@ -52,7 +48,10 @@ class Layout():
         box += UPPER_RIGHT_CORNER
         box += "\n"
         box += VERTICAL_BAR
-        box += contents
+        if self.direction == RTLDIR:
+            box += f'{RTL}{contents}{RTLPOP}'
+        else:
+            box += contents
         box += VERTICAL_BAR
         box += "\n"
         box += LOWER_LEFT_CORNER
@@ -60,7 +59,7 @@ class Layout():
             box += HORIZONTAL_BAR
         box += LOWER_RIGHT_CORNER
         box += "\n"
-        return box
+        return box        
 
     def placeit(self, x, y, it):
         row = y
@@ -75,9 +74,7 @@ class Layout():
                 col += 1
 
     def show_keyboard(self):
-        box = self.boxit('')
-        self.placeit(3, 1, box)
-        pos = 3
+        pos = 1
         for char in self.keyboard.layout[0]:
             box = self.boxit(char.lower)
             # print(pos, 1, char)
@@ -86,7 +83,7 @@ class Layout():
 
         box = self.boxit('TAB')
         self.placeit(1, 4, box)
-        pos = 7
+        pos = 6
         for char in self.keyboard.layout[1]:
             box = self.boxit(char.lower)
             self.placeit(pos, 4, box)
@@ -110,14 +107,11 @@ class Layout():
 
 
 def main():
-    x = Layout('Farsi.csv')
+    x = Layout('English.csv')
     x.screen_init()
     x.show_keyboard()
     x.screen.refresh()
-
     time.sleep(10)
-
-    print("Done!")
 
 
 if __name__ == "__main__":
