@@ -32,7 +32,6 @@ class Keyboard(object):
         cur_row = 0
         for row in reader:
             key = Key(*row)
-            print(key)
             self.position[key.upper] = (key.row, key.column)
             self.position[key.lower] = (key.row, key.column)
             self.pos_map[(key.row, key.column)] = [key.lower, key.upper]

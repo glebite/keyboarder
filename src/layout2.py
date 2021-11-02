@@ -39,6 +39,9 @@ class Layout():
         curses.noecho()
         curses.cbreak()
 
+    def __del__(self):
+        curses.endwin()
+
     def boxit(self, contents):
         """
         """
@@ -59,13 +62,12 @@ class Layout():
             box += HORIZONTAL_BAR
         box += LOWER_RIGHT_CORNER
         box += "\n"
-        return box        
+        return box
 
     def placeit(self, x, y, it):
         row = y
         col = x
         for character in it:
-            # print(row, col, character)
             self.screen.addstr(row, col, character)
             if character == "\n":
                 row += 1
@@ -73,45 +75,71 @@ class Layout():
             else:
                 col += 1
 
-    def show_keyboard(self):
-        pos = 1
+    def show_keyboard(self, row=1, column=1):
+        pos = 1 + column
         for char in self.keyboard.layout[0]:
             box = self.boxit(char.lower)
-            # print(pos, 1, char)
-            self.placeit(pos, 1, box)
+            self.placeit(pos, row, box)
             pos += 3
 
+        row += 3
         box = self.boxit('TAB')
-        self.placeit(1, 4, box)
+        self.placeit(column, row, box)
         pos = 6
         for char in self.keyboard.layout[1]:
             box = self.boxit(char.lower)
-            self.placeit(pos, 4, box)
+            self.placeit(pos, row, box)
             pos += 3
 
+        row += 3
         box = self.boxit('LOCK')
-        self.placeit(1, 7, box)
+        self.placeit(pos, row, box)
         pos = 7
         for char in self.keyboard.layout[2]:
             box = self.boxit(char.lower)
-            self.placeit(pos, 7, box)
+            self.placeit(pos, row, box)
             pos += 3
 
+        row += 3
         box = self.boxit('SHIFT')
-        self.placeit(1, 10, box)
+        self.placeit(column, row, box)
         pos = 8
         for char in self.keyboard.layout[3]:
             box = self.boxit(char.lower)
-            self.placeit(pos, 10, box)
+            self.placeit(pos, row, box)
             pos += 3
+
+    def snapshot(self):
+        height, width = self.screen.getmaxyx()
+        screen = list()
+        row_info = list()
+        for row in range(height):
+            for col in range(width):
+                row_info.append(self.screen.inch(row, col))
+            screen.append(row_info)
+            row_info = []
+        return screen
+
+    def output_snapshot(self):
+        snap = self.snapshot()
+        lines = ''
+        for row in snap:
+            for col_char in row:
+                if col_char > 255:
+                    col_char = 0
+                lines += chr(int(col_char))
+            lines += '\n\r'
+        return lines
 
 
 def main():
     x = Layout('English.csv')
     x.screen_init()
-    x.show_keyboard()
+    x.show_keyboard(1, 1)
     x.screen.refresh()
-    time.sleep(10)
+    time.sleep(1)
+    z = x.output_snapshot()
+    print(z)
 
 
 if __name__ == "__main__":
