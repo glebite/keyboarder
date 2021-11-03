@@ -76,7 +76,7 @@ class Layout():
                 col += 1
 
     def show_keyboard(self, row=1, column=1):
-        pos = 1 + column
+        pos = column
         for char in self.keyboard.layout[0]:
             box = self.boxit(char.lower)
             self.placeit(pos, row, box)
@@ -92,8 +92,8 @@ class Layout():
             pos += 3
 
         row += 3
-        box = self.boxit('LOCK')
-        self.placeit(pos, row, box)
+        box = self.boxit('CAPS')
+        self.placeit(column, row, box)
         pos = 7
         for char in self.keyboard.layout[2]:
             box = self.boxit(char.lower)
