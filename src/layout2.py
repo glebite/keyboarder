@@ -1,7 +1,27 @@
 import kboard
 import curses
 import time
+"""
+┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
+┃`   ┃┃1   ┃ ┃2  ┃┃3   ┃┃4   ┃┃5  ┃┃6    ┃┃7  ┃┃8   ┃┃9   ┃┃0  ┃┃-   ┃┃=   ┃
+┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛
+┏━━━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
+┃TAB       ┃┃q  ┃┃w  ┃┃e   ┃┃r   ┃┃t   ┃┃y   ┃┃u  ┃┃i    ┃┃o   ┃┃p  ┃┃[    ┃┃]   ┃┃\   ┃
+┗━━━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛
+┏━━━━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
+┃CAPS          ┃┃a   ┃┃s  ┃┃d   ┃┃f   ┃┃g   ┃┃h   ┃┃j   ┃┃k   ┃┃l    ┃┃;   ┃┃'    ┃
+┗━━━━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛
+┏━━━━━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
+┃SHIFT            ┃┃z   ┃┃x   ┃┃c   ┃┃v   ┃┃b  ┃┃n   ┃┃m ┃┃,   ┃┃.     ┃┃/   ┃
+┗━━━━━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛
 
+Assuming placement of (plc_row=0, plc_column=0)
+Wishing to highlight 'w', we would have to:
+1) find the key_row, (implied) column  in the keyboard object where Key.lower is 'w'
+2) row = (key_row*3) + 1 + plc_row
+3) column = sum of sizes of boxes on a row:
+     (TAB + 2) + 1 + 1 ...
+"""
 
 UPPER_LEFT_CORNER = u'\u250f'
 UPPER_RIGHT_CORNER = u'\u2513'
@@ -131,15 +151,21 @@ class Layout():
             lines += '\n\r'
         return lines
 
+    def calculate_position(self):
+        key_row, key_column = self.keyboard.get_key_position('b')
+        plc_row = 0
+        row = (key_row*3) + 1 + plc_row
+
 
 def main():
     x = Layout('English.csv')
-    x.screen_init()
-    x.show_keyboard(1, 1)
-    x.screen.refresh()
-    time.sleep(1)
-    z = x.output_snapshot()
-    print(z)
+    x.calculate_position()
+    # x.screen_init()
+    # x.show_keyboard(1, 0)
+    # x.screen.refresh()
+    # time.sleep(30)
+    # z = x.output_snapshot()
+    # print(z)
 
 
 if __name__ == "__main__":
