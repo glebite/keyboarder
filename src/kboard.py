@@ -36,12 +36,14 @@ class Keyboard(object):
             self.position[key.lower] = (key.row, key.column)
             self.pos_map[(key.row, key.column)] = [key.lower, key.upper]
 
+            # This is what is killing me - losing first key really...
             if key.row != cur_row:
                 self.layout.append(temp_row)
-                temp_row = list()
+                temp_row = [key]
                 cur_row = key.row
             else:
                 temp_row.append(key)
+                # print(temp_row[0].lower)
         self.layout.append(temp_row)
         self.rows = key.row
 

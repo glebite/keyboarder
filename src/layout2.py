@@ -3,7 +3,7 @@ import curses
 import time
 """
 ┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
-┃`   ┃┃1   ┃ ┃2  ┃┃3   ┃┃4   ┃┃5  ┃┃6    ┃┃7  ┃┃8   ┃┃9   ┃┃0  ┃┃-   ┃┃=   ┃
+┃` ┃┃1 ┃┃2 ┃┃3   ┃┃4   ┃┃5  ┃┃6    ┃┃7  ┃┃8   ┃┃9   ┃┃-   ┃┃=   ┃
 ┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛
 ┏━━━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
 ┃TAB       ┃┃q  ┃┃w  ┃┃e   ┃┃r   ┃┃t   ┃┃y   ┃┃u  ┃┃i    ┃┃o   ┃┃p  ┃┃[    ┃┃]   ┃┃\   ┃
@@ -100,34 +100,29 @@ class Layout():
         for char in self.keyboard.layout[0]:
             box = self.boxit(char.lower)
             self.placeit(pos, row, box)
-            pos += 3
+            pos += len(char.lower) + 2
 
         row += 3
-        box = self.boxit('TAB')
-        self.placeit(column, row, box)
-        pos = 6
+        pos = column
         for char in self.keyboard.layout[1]:
             box = self.boxit(char.lower)
             self.placeit(pos, row, box)
-            pos += 3
+            pos += len(char.lower) + 2
 
         row += 3
-        box = self.boxit('CAPS')
-        self.placeit(column, row, box)
-        pos = 7
+        pos = column
+
         for char in self.keyboard.layout[2]:
             box = self.boxit(char.lower)
             self.placeit(pos, row, box)
-            pos += 3
+            pos += len(char.lower) + 2
 
         row += 3
-        box = self.boxit('SHIFT')
-        self.placeit(column, row, box)
-        pos = 8
+        pos = column
         for char in self.keyboard.layout[3]:
             box = self.boxit(char.lower)
             self.placeit(pos, row, box)
-            pos += 3
+            pos += len(char.lower) + 2
 
     def snapshot(self):
         height, width = self.screen.getmaxyx()
@@ -155,15 +150,21 @@ class Layout():
         key_row, key_column = self.keyboard.get_key_position('b')
         plc_row = 0
         row = (key_row*3) + 1 + plc_row
-
+        pos = 1
+        for item in self.keyboard.layout[key_row]:
+            if item.lower == 'b':
+                break
+            pos += len(item.lower) + 2
+        return (row, pos)
 
 def main():
     x = Layout('English.csv')
-    x.calculate_position()
-    # x.screen_init()
-    # x.show_keyboard(1, 0)
-    # x.screen.refresh()
-    # time.sleep(30)
+    row,col = x.calculate_position()
+    x.screen_init()
+    x.show_keyboard(0, 0)
+    x.screen.addstr(row, col, 'b', curses.A_REVERSE)
+    x.screen.refresh()
+    time.sleep(5)
     # z = x.output_snapshot()
     # print(z)
 
