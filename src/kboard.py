@@ -43,7 +43,6 @@ class Keyboard(object):
                 cur_row = key.row
             else:
                 temp_row.append(key)
-                # print(temp_row[0].lower)
         self.layout.append(temp_row)
         self.rows = key.row
 

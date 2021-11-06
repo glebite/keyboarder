@@ -2,22 +2,11 @@ import kboard
 import curses
 import time
 """
-┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
-┃` ┃┃1 ┃┃2 ┃┃3   ┃┃4   ┃┃5  ┃┃6    ┃┃7  ┃┃8   ┃┃9   ┃┃-   ┃┃=   ┃
-┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛
-┏━━━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
-┃TAB       ┃┃q  ┃┃w  ┃┃e   ┃┃r   ┃┃t   ┃┃y   ┃┃u  ┃┃i    ┃┃o   ┃┃p  ┃┃[    ┃┃]   ┃┃\   ┃
-┗━━━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛
-┏━━━━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
-┃CAPS          ┃┃a   ┃┃s  ┃┃d   ┃┃f   ┃┃g   ┃┃h   ┃┃j   ┃┃k   ┃┃l    ┃┃;   ┃┃'    ┃
-┗━━━━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛
-┏━━━━━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓┏━┓
-┃SHIFT            ┃┃z   ┃┃x   ┃┃c   ┃┃v   ┃┃b  ┃┃n   ┃┃m ┃┃,   ┃┃.     ┃┃/   ┃
-┗━━━━━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛┗━┛
 
 Assuming placement of (plc_row=0, plc_column=0)
 Wishing to highlight 'w', we would have to:
-1) find the key_row, (implied) column  in the keyboard object where Key.lower is 'w'
+1) find the key_row, (implied) column  in the keyboard object where Key.lower
+   is 'w'
 2) row = (key_row*3) + 1 + plc_row
 3) column = sum of sizes of boxes on a row:
      (TAB + 2) + 1 + 1 ...
@@ -58,8 +47,10 @@ class Layout():
         self.screen = curses.initscr()
         curses.noecho()
         curses.cbreak()
+        curses.curs_set(0)
 
     def __del__(self):
+        curses.curs_set(1)
         curses.endwin()
 
     def boxit(self, contents):
@@ -146,27 +137,42 @@ class Layout():
             lines += '\n\r'
         return lines
 
-    def calculate_position(self):
-        key_row, key_column = self.keyboard.get_key_position('b')
+    def calculate_position(self, character):
+        key_row, key_column = self.keyboard.get_key_position(character)
         plc_row = 0
         row = (key_row*3) + 1 + plc_row
         pos = 1
         for item in self.keyboard.layout[key_row]:
-            if item.lower == 'b':
+            if item.lower == character:
                 break
             pos += len(item.lower) + 2
         return (row, pos)
 
+    def blink(self, character, state='ON'):
+        row, column = self.calculate_position(character)
+        if state == 'ON':
+            self.screen.addstr(row, column, character, curses.A_BLINK)
+        else:
+            self.screen.addstr(row, column, character, curses.A_NORMAL)
+        self.screen.refresh()
+
+
 def main():
-    x = Layout('English.csv')
-    row,col = x.calculate_position()
-    x.screen_init()
-    x.show_keyboard(0, 0)
-    x.screen.addstr(row, col, 'b', curses.A_REVERSE)
-    x.screen.refresh()
-    time.sleep(5)
-    # z = x.output_snapshot()
-    # print(z)
+    try:
+        x = Layout('English.csv')
+        y = Layout('Farsi_RTL.csv')
+        r = y.keyboard.layout[2][3].lower
+        (row, col) = y.keyboard.get_key_position(r)
+        char = x.keyboard.get_char_from_position(row, col)[0]
+        x.screen_init()
+        x.show_keyboard(0, 0)
+        x.screen.refresh()
+        x.blink(char, state='ON')
+        time.sleep(5)
+        x.blink(char, state='OFF')
+        time.sleep(5)
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
