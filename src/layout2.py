@@ -156,23 +156,27 @@ class Layout():
             self.screen.addstr(row, column, character, curses.A_NORMAL)
         self.screen.refresh()
 
+    def demo_cool(self, layout):
+        for row in layout.keyboard.layout:
+            for key in row:
+                other_char = key.lower
+                row, column = layout.keyboard.get_key_position(other_char)
+                char = self.keyboard.get_char_from_position(row, column)[0]
+                if len(char) > 1:
+                    continue
+                self.screen.addstr(5, 60, other_char)
+                self.key_visibility(char, state='ON')
+                time.sleep(0.5)
+                self.key_visibility(char, state='OFF')
+
 
 def main():
-    try:
-        x = Layout('English.csv')
-        y = Layout('Farsi_RTL.csv')
-        r = y.keyboard.layout[2][4].lower
-        (row, col) = y.keyboard.get_key_position(r)
-        char = x.keyboard.get_char_from_position(row, col)[0]
-        x.screen_init()
-        x.show_keyboard(0, 0)
-        x.screen.refresh()
-        x.key_visibility(char, state='ON')
-        time.sleep(5)
-        x.key_visibility(char, state='OFF')
-        time.sleep(5)
-    except Exception as e:
-        print(e)
+    physical = Layout('English.csv')
+    training = Layout('Farsi_RTL.csv')
+    physical.screen_init()
+    physical.show_keyboard(0, 0)
+    physical.screen.refresh()
+    physical.demo_cool(training)
 
 
 if __name__ == "__main__":
