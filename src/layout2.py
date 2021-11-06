@@ -148,10 +148,10 @@ class Layout():
             pos += len(item.lower) + 2
         return (row, pos)
 
-    def blink(self, character, state='ON'):
+    def key_visibility(self, character, state='ON'):
         row, column = self.calculate_position(character)
         if state == 'ON':
-            self.screen.addstr(row, column, character, curses.A_BLINK)
+            self.screen.addstr(row, column, character, curses.A_STANDOUT)
         else:
             self.screen.addstr(row, column, character, curses.A_NORMAL)
         self.screen.refresh()
@@ -161,15 +161,15 @@ def main():
     try:
         x = Layout('English.csv')
         y = Layout('Farsi_RTL.csv')
-        r = y.keyboard.layout[2][3].lower
+        r = y.keyboard.layout[2][4].lower
         (row, col) = y.keyboard.get_key_position(r)
         char = x.keyboard.get_char_from_position(row, col)[0]
         x.screen_init()
         x.show_keyboard(0, 0)
         x.screen.refresh()
-        x.blink(char, state='ON')
+        x.key_visibility(char, state='ON')
         time.sleep(5)
-        x.blink(char, state='OFF')
+        x.key_visibility(char, state='OFF')
         time.sleep(5)
     except Exception as e:
         print(e)
