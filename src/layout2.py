@@ -169,6 +169,9 @@ class Layout():
                 time.sleep(0.5)
                 self.key_visibility(char, state='OFF')
 
+    def simple_follow(self, layout):
+        pass
+
 
 def main():
     physical = Layout('English.csv')
