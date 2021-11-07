@@ -2,6 +2,7 @@
 """
 from key import Key
 import csv
+import random
 
 
 class Keyboard(object):
@@ -69,3 +70,7 @@ class Keyboard(object):
         """get_char_from_position
         """
         return self.pos_map[(row, column)]
+
+    def pick_random_key(self):
+        flat_list = [item for sublist in self.layout for item in sublist]
+        return random.choice(flat_list).lower

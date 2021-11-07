@@ -3,6 +3,7 @@
 import kboard
 import layout2
 import time
+import curses
 
 
 class KeyPlayer(object):
@@ -20,7 +21,7 @@ class KeyPlayer(object):
         self.key_presses = 0
         self.key_correct = 0
 
-                                   
+
 def main(lang1, lang2):
     """
     """
@@ -37,7 +38,16 @@ def main(lang1, lang2):
     player.host_layout.key_visibility(host_char, state='ON')
     player.host_layout.screen.addstr(5, 60, target_character)
     player.host_layout.screen.refresh()
-    time.sleep(10)
+    in_key = None
+
+    # import pdb; pdb.set_trace()
+    while in_key != '`':
+        in_key = chr(player.host_layout.screen.getch())
+        if in_key == host_char:
+            print(f'Yay! {in_key} matches!')
+        else:
+            print(f'Boo - {in_key} does not match {host_char}')
+        time.sleep(1)
 
 
 if __name__ == "__main__":
