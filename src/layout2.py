@@ -49,6 +49,12 @@ class Layout():
         curses.cbreak()
         curses.curs_set(0)
 
+    def screen_deinit(self):
+        """
+        """
+        curses.curs_set(1)
+        curses.endwin()
+
     def __del__(self):
         curses.curs_set(1)
         curses.endwin()

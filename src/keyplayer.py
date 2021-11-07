@@ -2,6 +2,7 @@
 """
 import kboard
 import layout2
+import time
 
 
 class KeyPlayer(object):
@@ -19,16 +20,24 @@ class KeyPlayer(object):
         self.key_presses = 0
         self.key_correct = 0
 
-
+                                   
 def main(lang1, lang2):
     """
     """
     player = KeyPlayer(lang1, lang2)
-    # import pdb; pdb.set_trace()
     player.host_layout.screen_init()
     player.host_layout.show_keyboard(0, 0)
     player.host_layout.screen.refresh()
-    player.host_layout.demo_cool(player.target_layout)
+    # player.host_layout.demo_cool(player.target_layout)
+    target_character = 'ت'
+    row, column = player.target_layout.\
+        keyboard.get_key_position(target_character)
+    host_char = player.host_layout.keyboard.\
+        get_char_from_position(row, column)[0]
+    player.host_layout.key_visibility(host_char, state='ON')
+    player.host_layout.screen.addstr(5, 60, target_character)
+    player.host_layout.screen.refresh()
+    time.sleep(10)
 
 
 if __name__ == "__main__":
