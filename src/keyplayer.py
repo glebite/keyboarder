@@ -37,7 +37,7 @@ def main(lang1, lang2):
         # target_character = player.target.keyboard.pick_random_key()
         target_character = player.target_layout.\
             keyboard.layout[3][game_round].lower
-        if len(target_character) > 1:
+        if len(target_character) > 3:
             continue
         row, column = player.target_layout.\
             keyboard.get_key_position(target_character)
