@@ -31,10 +31,12 @@ def main(lang1, lang2):
     player.host_layout.screen.refresh()
 
     for game_round in range(10):
+        # target_character = player.target.pick_random_key()
         # import pdb
         # pdb.set_trace()
         # target_character = player.target.keyboard.pick_random_key()
-        target_character = player.target.pick_random_key()
+        target_character = player.target_layout.\
+            keyboard.layout[3][game_round].lower
         if len(target_character) > 1:
             continue
         row, column = player.target_layout.\
