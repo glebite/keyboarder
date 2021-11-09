@@ -25,18 +25,20 @@ def main(lang1, lang2):
     """
     success = 0
     fail = 0
+    failed_characters = list()
     player = KeyPlayer(lang1, lang2)
     player.host_layout.screen_init()
     player.host_layout.show_keyboard(0, 0)
     player.host_layout.screen.refresh()
 
-    for game_round in range(10):
-        # target_character = player.target.pick_random_key()
+    player.host_layout.screen.addstr(4, 55, 'Current Character:')
+    for game_round in range(11):
+        target_character = player.target.pick_random_key()
         # import pdb
         # pdb.set_trace()
         # target_character = player.target.keyboard.pick_random_key()
-        target_character = player.target_layout.\
-            keyboard.layout[3][game_round].lower
+        # target_character = player.target_layout.\
+        #    keyboard.layout[3][game_round].lower
         if len(target_character) > 3:
             continue
         row, column = player.target_layout.\
@@ -53,9 +55,14 @@ def main(lang1, lang2):
         if in_key == host_char:
             success += 1
         else:
+            failed_characters.append(target_character)
             fail += 1
     player.host_layout.screen_deinit()
-    print(success, fail)
+    print(f'Pass: {success}')
+    print(f'Fail: {fail}')
+    if fail:
+        for failed in failed_characters:
+            print(f'Missed: {failed}')
 
 
 if __name__ == "__main__":
