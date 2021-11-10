@@ -23,6 +23,7 @@ class KeyPlayer(object):
 def main(lang1, lang2):
     """
     """
+    keys_to_ignore = ['TAB', 'CAPS', 'SHIFT']
     success = 0
     fail = 0
     failed_characters = list()
@@ -33,13 +34,13 @@ def main(lang1, lang2):
 
     player.host_layout.screen.addstr(4, 55, 'Current Character:')
     for game_round in range(11):
-        target_character = player.target.pick_random_key()
+        # target_character = player.target.pick_random_key()
         # import pdb
         # pdb.set_trace()
         # target_character = player.target.keyboard.pick_random_key()
-        # target_character = player.target_layout.\
-        #    keyboard.layout[3][game_round].lower
-        if len(target_character) > 3:
+        target_character = player.target_layout.\
+            keyboard.layout[1][game_round].lower
+        if len(target_character) > 3 or target_character in keys_to_ignore:
             continue
         row, column = player.target_layout.\
             keyboard.get_key_position(target_character)
