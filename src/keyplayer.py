@@ -33,13 +33,17 @@ def main(lang1, lang2):
     player.host_layout.screen.refresh()
 
     player.host_layout.screen.addstr(4, 55, 'Current Character:')
-    for game_round in range(11):
-        # target_character = player.target.pick_random_key()
+    player.host_layout.screen.addstr(7, 55, 'Score: ')
+    player.host_layout.screen.addstr(8, 55, 'Success: ')
+    player.host_layout.screen.addstr(9, 55, 'Fail:    ')
+
+    for game_round in range(20):
+        target_character = player.target.pick_random_key()
         # import pdb
         # pdb.set_trace()
         # target_character = player.target.keyboard.pick_random_key()
-        target_character = player.target_layout.\
-            keyboard.layout[1][game_round].lower
+        # target_character = player.target_layout.\
+        #     keyboard.layout[1][game_round].lower
         if len(target_character) > 3 or target_character in keys_to_ignore:
             continue
         row, column = player.target_layout.\
@@ -58,6 +62,9 @@ def main(lang1, lang2):
         else:
             failed_characters.append(target_character)
             fail += 1
+        player.host_layout.screen.addstr(8, 65, f'{success}')
+        player.host_layout.screen.addstr(9, 65, f'{fail}')
+
     player.host_layout.screen_deinit()
     print(f'Pass: {success}')
     print(f'Fail: {fail}')
