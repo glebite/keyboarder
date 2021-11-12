@@ -56,14 +56,14 @@ class Layout():
             curses.curs_set(1)
             curses.endwin()
         except Exception as e:
-            print('Exception on close handled: {e}')
+            print(f'Exception on close handled: {e}')
 
     def __del__(self):
         try:
             curses.curs_set(1)
             curses.endwin()
         except Exception as e:
-            print('Exception on close handled: {e}')
+            print(f'Exception on close handled: {e}')
 
     def boxit(self, contents):
         """
