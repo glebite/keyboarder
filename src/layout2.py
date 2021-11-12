@@ -52,12 +52,18 @@ class Layout():
     def screen_deinit(self):
         """
         """
-        curses.curs_set(1)
-        curses.endwin()
+        try:
+            curses.curs_set(1)
+            curses.endwin()
+        except Exception as e:
+            print('Exception on close handled: {e}')
 
     def __del__(self):
-        curses.curs_set(1)
-        curses.endwin()
+        try:
+            curses.curs_set(1)
+            curses.endwin()
+        except Exception as e:
+            print('Exception on close handled: {e}')
 
     def boxit(self, contents):
         """
@@ -177,6 +183,13 @@ class Layout():
 
     def simple_follow(self, layout):
         pass
+
+    def dump_keyboard(self):
+        output = list()
+        for row in self.keyboard.layout:
+            for key in row:
+                output.append(key.lower)
+        return output
 
 
 def main():

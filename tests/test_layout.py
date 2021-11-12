@@ -8,5 +8,4 @@ def test_layout_creation():
 
 def test_layout_dump():
     board = Layout('src/English.csv')
-    assert 'a' in board.dump_keyboard() 
-
+    assert 'a' in board.dump_keyboard()

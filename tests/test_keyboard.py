@@ -7,7 +7,7 @@ def test_keyboard_creation():
 
 
 def test_read_config():
-    board = Keyboard('src/Farsi.csv')
+    board = Keyboard('src/Farsi_RTL.csv')
     board.read_config()
 
 
@@ -42,7 +42,7 @@ def test_csv_not_found():
 def test_mapping():
     english = Keyboard('src/English.csv')
     english.read_config()
-    farsi = Keyboard('src/Farsi.csv')
+    farsi = Keyboard('src/Farsi_RTL.csv')
     farsi.read_config()
     row, column = english.get_key_position('k')
     lower, upper = farsi.get_char_from_position(row, column)
