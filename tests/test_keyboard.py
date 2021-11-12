@@ -49,3 +49,9 @@ def test_mapping():
     print(lower)
     print(upper)
     assert lower == 'ن'
+
+
+def test_random_pick():
+    english = Keyboard('src/English.csv')
+    english.read_config()
+    assert english.pick_random_key() is not None

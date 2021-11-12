@@ -150,7 +150,10 @@ class Layout():
         return lines
 
     def calculate_position(self, character):
+        # TODO: get_key_position should raise Exception instead
         key_row, key_column = self.keyboard.get_key_position(character)
+        if key_row < 0 or key_column < 0:
+            return (-1, -1)
         plc_row = 0
         row = (key_row*3) + 1 + plc_row
         pos = 1
@@ -180,9 +183,6 @@ class Layout():
                 self.key_visibility(char, state='ON')
                 time.sleep(0.5)
                 self.key_visibility(char, state='OFF')
-
-    def simple_follow(self, layout):
-        pass
 
     def dump_keyboard(self):
         output = list()
