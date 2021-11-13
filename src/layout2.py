@@ -99,33 +99,14 @@ class Layout():
                 col += 1
 
     def show_keyboard(self, row=1, column=1):
-        pos = column
-        for char in self.keyboard.layout[0]:
-            box = self.boxit(char.lower)
-            self.placeit(pos, row, box)
-            pos += len(char.lower) + 2
-
-        row += 3
-        pos = column
-        for char in self.keyboard.layout[1]:
-            box = self.boxit(char.lower)
-            self.placeit(pos, row, box)
-            pos += len(char.lower) + 2
-
-        row += 3
-        pos = column
-
-        for char in self.keyboard.layout[2]:
-            box = self.boxit(char.lower)
-            self.placeit(pos, row, box)
-            pos += len(char.lower) + 2
-
-        row += 3
-        pos = column
-        for char in self.keyboard.layout[3]:
-            box = self.boxit(char.lower)
-            self.placeit(pos, row, box)
-            pos += len(char.lower) + 2
+        row_counter = 0
+        for row_count, row_info in enumerate(self.keyboard.layout):
+            pos = column
+            for char in row_info:
+                box = self.boxit(char.lower)
+                self.placeit(pos, row_counter, box)
+                pos += len(char.lower) + 2
+            row_counter += 3
 
     def snapshot(self):
         height, width = self.screen.getmaxyx()
