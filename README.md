@@ -49,6 +49,14 @@ $ sudo human --action celebrate
 6) Move the display to a web application;
 7) Oh yeah - make use of it.  :)  
 
+## Contributing:  
+Complaints? Bugs?  Questions? Ideas? 
+
+Follow the github issue tracker.
+
+## Credits:  
+This application was created by glebite.  I am @glebite on ![github](http://www.github.com/glebite).
+
 ## Pictures are awesome:  
 
 ![English](./images/Linux-English-Keyboard.png)  

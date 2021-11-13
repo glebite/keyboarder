@@ -73,10 +73,3 @@ class Keyboard(object):
     def pick_random_key(self):
         flat_list = [item for sublist in self.layout for item in sublist]
         return random.choice(flat_list).lower
-
-
-if __name__ == "__main__":
-    x = Keyboard('Farsi_RTL.csv')
-    x.read_config()
-    for key in x.layout[3]:
-        print(key.lower)
