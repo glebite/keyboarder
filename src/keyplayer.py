@@ -20,7 +20,7 @@ class KeyPlayer(object):
         self.key_correct = 0
 
 
-def main(lang1, lang2):
+def main(lang1, lang2):   # pragma: nocover
     """
     """
     keys_to_ignore = ['TAB', 'CAPS', 'SHIFT']
@@ -74,4 +74,4 @@ def main(lang1, lang2):
 
 
 if __name__ == "__main__":
-    main('English.csv', 'Farsi_RTL.csv')
+    main('English.csv', 'Farsi_RTL.csv')  # pragma: nocover

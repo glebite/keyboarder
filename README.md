@@ -56,7 +56,7 @@ Complaints? Bugs?  Questions? Ideas?
 Follow the github issue tracker.
 
 ## Credits:  
-This application was created by glebite.  I am @glebite on ![github](http://www.github.com/glebite).
+This application was created by glebite.  I am @glebite on [github](http://www.github.com/glebite).
 
 ## Pictures are awesome:  
 
@@ -65,12 +65,13 @@ This application was created by glebite.  I am @glebite on ![github](http://www.
 
 ## Game composition notes:  
 
-1) Random character selection with hints, # characters
-2) Random character selection without hints, # characters
-3) Random character selection with hints, # characters, timed
-4) Random character selection without hints, # characters, timed
-5) Simple words with hints
-6) Simple words with hints and timed
-7) Simple words without hints
-8) Simple words without hints and timed
+1) Random character selection with hints, # characters  
+2) Random character selection without hints, # characters  
+3) Random character selection with hints, # characters, timed  
+4) Random character selection without hints, # characters, timed  
+5) Simple words with hints  
+6) Simple words with hints and timed  
+7) Simple words without hints  
+8) Simple words without hints and timed  
+
 
