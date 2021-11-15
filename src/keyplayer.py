@@ -39,11 +39,7 @@ def main(lang1, lang2):   # pragma: nocover
 
     for game_round in range(20):
         target_character = player.target.pick_random_key()
-        # import pdb
-        # pdb.set_trace()
-        # target_character = player.target.keyboard.pick_random_key()
-        # target_character = player.target_layout.\
-        #     keyboard.layout[1][game_round].lower
+
         if len(target_character) > 3 or target_character in keys_to_ignore:
             continue
         row, column = player.target_layout.\

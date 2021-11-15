@@ -38,6 +38,10 @@ class Game:
         print(self.data)
 
     def run(self):
+        success = 0
+        fail = 0
+        failed_characters = list()
+        keys_to_ignore = ['TAB', 'CAPS', 'SHIFT']
         player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
         player.host_layout.screen_init()
         player.host_layout.show_keyboard(0, 0)
@@ -49,7 +53,37 @@ class Game:
         player.host_layout.screen.addstr(8, 55, 'Success: ')
         player.host_layout.screen.addstr(9, 55, 'Fail:    ')
         player.host_layout.screen.refresh()
-        time.sleep(10)
+            
+        for game_round in range(20):
+            target_character = player.target.pick_random_key()
+
+            if len(target_character) > 3 or target_character in keys_to_ignore:
+                continue
+            row, column = player.target_layout.\
+                keyboard.get_key_position(target_character)
+            host_char = player.host_layout.keyboard.\
+                get_char_from_position(row, column)[0]
+            player.host_layout.key_visibility(host_char, state='ON')
+            player.host_layout.screen.addstr(5, 60, target_character)
+            player.host_layout.screen.refresh()
+
+            in_key = chr(player.host_layout.screen.getch())
+            player.host_layout.key_visibility(host_char, state='OFF')
+
+            if in_key == host_char:
+                success += 1
+            else:
+                failed_characters.append(target_character)
+                fail += 1
+            player.host_layout.screen.addstr(8, 65, f'{success}')
+            player.host_layout.screen.addstr(9, 65, f'{fail}')
+
+        player.host_layout.screen_deinit()
+        print(f'Pass: {success}')
+        print(f'Fail: {fail}')
+        if fail:
+            for failed in failed_characters:
+                print(f'Missed: {failed}')
 
 
 def main():
