@@ -53,8 +53,8 @@ class Game:
         player.host_layout.screen.addstr(8, 55, 'Success: ')
         player.host_layout.screen.addstr(9, 55, 'Fail:    ')
         player.host_layout.screen.refresh()
-            
-        for game_round in range(20):
+
+        for game_round in range(int(self.data['number'])):
             target_character = player.target.pick_random_key()
 
             if len(target_character) > 3 or target_character in keys_to_ignore:
