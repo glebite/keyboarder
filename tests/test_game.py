@@ -41,4 +41,3 @@ def test_load_game():
     game.load_game()
     assert game.data['target_kbd'] == 'Farsi_RTL.csv', f"target_kbd" \
         f" is {game.data['target_kbd']} instead of Farsi_RTL.csv"
-

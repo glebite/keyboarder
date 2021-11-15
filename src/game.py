@@ -1,4 +1,7 @@
+from ast import literal_eval
 import configparser
+from keyplayer import KeyPlayer
+import time
 
 
 class Game:
@@ -18,7 +21,7 @@ class Game:
                      'target_kdb': None}
 
     def load_game(self):
-        self.cfg_parser = configparser.ConfigParser()
+        self.cfg_parser = configparser.ConfigParser(converters={"any": lambda x: literal_eval(x)})
         try:
             self.cfg_parser.read_file(open(self.game_file, 'r'))
         except FileNotFoundError:
@@ -34,10 +37,25 @@ class Game:
             self.data[entry] = self.cfg_parser['Game'][entry]
         print(self.data)
 
+    def run(self):
+        player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
+        player.host_layout.screen_init()
+        player.host_layout.show_keyboard(0, 0)
+        if self.data['words']:
+            player.host_layout.screen.addstr(4, 55, 'Current Word:')
+        else:
+            player.host_layout.screen.addstr(4, 55, 'Current Character:')
+        player.host_layout.screen.addstr(7, 55, 'Score: ')
+        player.host_layout.screen.addstr(8, 55, 'Success: ')
+        player.host_layout.screen.addstr(9, 55, 'Fail:    ')
+        player.host_layout.screen.refresh()
+        time.sleep(10)
+
 
 def main():
     g = Game('../data/game_1.cfg')
     g.load_game()
+    g.run()
 
 
 if __name__ == "__main__": main()
