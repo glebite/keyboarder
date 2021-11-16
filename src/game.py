@@ -57,7 +57,7 @@ class Game:
                     int(self.cfg_parser['Game'][entry])
             elif self.cfg_parser['Game'][entry] in ['True', 'False']:
                 self.data[entry] =\
-                    bool(self.cfg_parser['Game'][entry] is True)
+                    bool(self.cfg_parser['Game'][entry] == 'True')
             else:
                 self.data[entry] =\
                     self.cfg_parser['Game'][entry]
@@ -102,10 +102,12 @@ class Game:
 
             if self.data['hints']:
                 self.player.host_layout.key_visibility(host_char, state='ON')
+                self.player.host_layout.screen.refresh()
 
             in_key = chr(self.player.host_layout.screen.getch())
             if self.data['hints']:
                 self.player.host_layout.key_visibility(host_char, state='OFF')
+                self.player.host_layout.screen.refresh()
 
             if in_key == host_char:
                 success += 1
