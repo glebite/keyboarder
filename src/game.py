@@ -9,7 +9,10 @@ class Label:
         self.description = description
         self.row = row
         self.column = column
-    
+
+    def info(self):
+        return (self.row, self.column, self.description)
+
 
 class Game:
     """
@@ -26,10 +29,10 @@ class Game:
                      'word_file': None,
                      'host_kbd': None,
                      'target_kbd': None}
-        self.goal_label = Label('Current Character', 4, 55)
-        self.score_label = Label('Score', 7, 55)
-        self.pass_label = Label('Pass', 8, 55)
-        self.fail_label = Label('Fail', 9, 55)
+        self.goal_label = Label('Current Character:', 4, 55)
+        self.score_label = Label('Score:', 7, 55)
+        self.pass_label = Label('Pass:', 8, 55)
+        self.fail_label = Label('Fail:', 9, 55)
 
     def load_game(self):
         self.cfg_parser = configparser.\
@@ -63,13 +66,18 @@ class Game:
         self.player.host_layout.screen_init()
         self.player.host_layout.show_keyboard(0, 0)
         if self.data['words']:
-            self.player.host_layout.screen.addstr(4, 55, 'Current Word:')
-        else:
-            self.player.host_layout.screen.addstr(4, 55, 'Current Character:')
-        self.player.host_layout.screen.addstr(7, 55, 'Score: ')
-        self.player.host_layout.screen.addstr(8, 55, 'Success: ')
-        self.player.host_layout.screen.addstr(9, 55, 'Fail:    ')
+            self.goal_label = Label(4, 55, 'Current word:')
+        for label in [self.goal_label,
+                      self.score_label,
+                      self.pass_label,
+                      self.fail_label]:
+            self.write_label(label)
         self.player.host_layout.screen.refresh()
+
+    def write_label(self, label):
+        self.player.host_layout.screen.addstr(label.row,
+                                              label.column,
+                                              label.description)
 
     def run(self):
         success = 0
