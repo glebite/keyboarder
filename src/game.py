@@ -4,6 +4,13 @@ from keyplayer import KeyPlayer
 import time
 
 
+class Label:
+    def __init__(self, description, row, column):
+        self.description = description
+        self.row = row
+        self.column = column
+    
+
 class Game:
     """
     """
@@ -19,6 +26,10 @@ class Game:
                      'word_file': None,
                      'host_kbd': None,
                      'target_kbd': None}
+        self.goal_label = Label('Current Character', 4, 55)
+        self.score_label = Label('Score', 7, 55)
+        self.pass_label = Label('Pass', 8, 55)
+        self.fail_label = Label('Fail', 9, 55)
 
     def load_game(self):
         self.cfg_parser = configparser.\
@@ -48,51 +59,55 @@ class Game:
                 self.data[entry] =\
                     self.cfg_parser['Game'][entry]
 
+    def setup_display(self):
+        self.player.host_layout.screen_init()
+        self.player.host_layout.show_keyboard(0, 0)
+        if self.data['words']:
+            self.player.host_layout.screen.addstr(4, 55, 'Current Word:')
+        else:
+            self.player.host_layout.screen.addstr(4, 55, 'Current Character:')
+        self.player.host_layout.screen.addstr(7, 55, 'Score: ')
+        self.player.host_layout.screen.addstr(8, 55, 'Success: ')
+        self.player.host_layout.screen.addstr(9, 55, 'Fail:    ')
+        self.player.host_layout.screen.refresh()
+
     def run(self):
         success = 0
         fail = 0
         failed_characters = list()
         keys_to_ignore = ['TAB', 'CAPS', 'SHIFT']
-        player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
-        player.host_layout.screen_init()
-        player.host_layout.show_keyboard(0, 0)
-        if self.data['words']:
-            player.host_layout.screen.addstr(4, 55, 'Current Word:')
-        else:
-            player.host_layout.screen.addstr(4, 55, 'Current Character:')
-        player.host_layout.screen.addstr(7, 55, 'Score: ')
-        player.host_layout.screen.addstr(8, 55, 'Success: ')
-        player.host_layout.screen.addstr(9, 55, 'Fail:    ')
-        player.host_layout.screen.refresh()
+
+        self.player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
+        self.setup_display()
 
         for game_round in range(self.data['number']):
-            target_character = player.target.pick_random_key()
+            target_character = self.player.target.pick_random_key()
 
             if len(target_character) > 3 or target_character in keys_to_ignore:
                 continue
-            row, column = player.target_layout.\
+            row, column = self.player.target_layout.\
                 keyboard.get_key_position(target_character)
-            host_char = player.host_layout.keyboard.\
+            host_char = self.player.host_layout.keyboard.\
                 get_char_from_position(row, column)[0]
-            if self.data['hints']:
-                player.host_layout.key_visibility(host_char, state='ON')
+            self.player.host_layout.screen.addstr(5, 60, target_character)
+            self.player.host_layout.screen.refresh()
 
-            player.host_layout.screen.addstr(5, 60, target_character)
-            player.host_layout.screen.refresh()
-
-            in_key = chr(player.host_layout.screen.getch())
             if self.data['hints']:
-                player.host_layout.key_visibility(host_char, state='OFF')
+                self.player.host_layout.key_visibility(host_char, state='ON')
+
+            in_key = chr(self.player.host_layout.screen.getch())
+            if self.data['hints']:
+                self.player.host_layout.key_visibility(host_char, state='OFF')
 
             if in_key == host_char:
                 success += 1
             else:
                 failed_characters.append(target_character)
                 fail += 1
-            player.host_layout.screen.addstr(8, 65, f'{success}')
-            player.host_layout.screen.addstr(9, 65, f'{fail}')
+            self.player.host_layout.screen.addstr(8, 65, f'{success}')
+            self.player.host_layout.screen.addstr(9, 65, f'{fail}')
 
-        player.host_layout.screen_deinit()
+        self.player.host_layout.screen_deinit()
         print(f'Pass: {success}')
         print(f'Fail: {fail}')
         if fail:
