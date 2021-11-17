@@ -80,6 +80,16 @@ class Game:
                                               label.column,
                                               label.description)
 
+    def hint_on(self):
+        if self.data['hints']:
+            self.player.host_layout.key_visibility(host_char, state='ON')
+            self.player.host_layout.screen.refresh()
+
+    def hint_off(self):
+        if self.data['hints']:
+            self.player.host_layout.key_visibility(host_char, state='OFF')
+            self.player.host_layout.screen.refresh()
+        
     def run(self):
         success = 0
         fail = 0
@@ -101,14 +111,11 @@ class Game:
             self.player.host_layout.screen.addstr(5, 60, target_character)
             self.player.host_layout.screen.refresh()
 
-            if self.data['hints']:
-                self.player.host_layout.key_visibility(host_char, state='ON')
-                self.player.host_layout.screen.refresh()
-
+            self.hint_on()
+            
             in_key = chr(self.player.host_layout.screen.getch())
-            if self.data['hints']:
-                self.player.host_layout.key_visibility(host_char, state='OFF')
-                self.player.host_layout.screen.refresh()
+
+            self.hint_off()
 
             if in_key == host_char:
                 success += 1
