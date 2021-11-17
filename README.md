@@ -25,9 +25,9 @@ $ python3 -m pip install -r requirements.txt
 4) Activate your virtual environment for keyboarder:  
 $ source venv/bin/activate
 
-5) Get to and execute 'keyplayer':  
+5) Get to and execute 'game':  
 $ cd src  
-$ python3 keyplayer.py
+$ python3 game.py ../data/game_1.cfg
 
 6) Enjoy what it is for now:
 ![In Action!](./images/keyplayerinaction.png)  

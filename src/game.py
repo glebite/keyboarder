@@ -112,7 +112,7 @@ class Game:
             self.player.host_layout.screen.refresh()
 
             self.hint_on()
-            
+
             in_key = chr(self.player.host_layout.screen.getch())
 
             self.hint_off()
