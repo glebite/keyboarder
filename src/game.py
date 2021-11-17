@@ -2,6 +2,7 @@ from ast import literal_eval
 import configparser
 from keyplayer import KeyPlayer
 import time
+import sys
 
 
 class Label:
@@ -125,11 +126,11 @@ class Game:
                 print(f'Missed: {failed}')
 
 
-def main():
-    g = Game('../data/game_1.cfg')
+def main(game_file):
+    g = Game(game_file)
     g.load_game()
     g.run()
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])
