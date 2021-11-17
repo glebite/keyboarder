@@ -1,7 +1,6 @@
 from ast import literal_eval
 import configparser
 from keyplayer import KeyPlayer
-import time
 import sys
 
 
@@ -80,16 +79,29 @@ class Game:
                                               label.column,
                                               label.description)
 
-    def hint_on(self):
+    def hint_on(self, host_char):
         if self.data['hints']:
             self.player.host_layout.key_visibility(host_char, state='ON')
             self.player.host_layout.screen.refresh()
 
-    def hint_off(self):
+    def hint_off(self, host_char):
         if self.data['hints']:
             self.player.host_layout.key_visibility(host_char, state='OFF')
             self.player.host_layout.screen.refresh()
-        
+
+    def accept_input(self):
+        user_input = ''
+        key_input = ''
+        if self.data['characters']:
+            user_input = chr(self.player.host_layout.screen.getch())
+        elif self.data['words']:
+            while key_input != '\n':
+                key_input = chr(self.player.host_layout.screen.getch())
+                user_input += key_input
+        else:
+            print('Unknown state - choose either characters or words')
+        return user_input.rstrip()
+
     def run(self):
         success = 0
         fail = 0
@@ -111,11 +123,11 @@ class Game:
             self.player.host_layout.screen.addstr(5, 60, target_character)
             self.player.host_layout.screen.refresh()
 
-            self.hint_on()
+            self.hint_on(host_char)
 
-            in_key = chr(self.player.host_layout.screen.getch())
+            in_key = self.accept_input()
 
-            self.hint_off()
+            self.hint_off(host_char)
 
             if in_key == host_char:
                 success += 1
