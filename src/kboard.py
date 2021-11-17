@@ -71,5 +71,7 @@ class Keyboard(object):
         return self.pos_map[(row, column)]
 
     def pick_random_key(self):
-        flat_list = [item for sublist in self.layout for item in sublist]
+        remove_list = ['TAB', 'CAPS', 'SHIFT']
+        flat_list = [item for sublist in self.layout for item in sublist
+                     if item not in remove_list]
         return random.choice(flat_list).lower
