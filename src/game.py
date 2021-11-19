@@ -5,7 +5,9 @@ import sys
 
 
 class Label:
+    """Label - helper class for on-screen labels"""
     def __init__(self, description, row, column):
+        """__init__ - description, row, column for a Label """
         self.description = description
         self.row = row
         self.column = column
