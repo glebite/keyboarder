@@ -35,6 +35,9 @@ class Game:
         self.score_label = Label('Score:', 7, 55)
         self.pass_label = Label('Pass:', 8, 55)
         self.fail_label = Label('Fail:', 9, 55)
+        self.failed_characters = list()
+        self.success = 0
+        self.fail = 0
 
     def load_game(self):
         self.cfg_parser = configparser.\
@@ -82,11 +85,13 @@ class Game:
                                               label.description)
 
     def hint_on(self, host_char):
+        """hint_on - highlights a key on the screen """
         if self.data['hints']:
             self.player.host_layout.key_visibility(host_char, state='ON')
             self.player.host_layout.screen.refresh()
 
     def hint_off(self, host_char):
+        """hint_off - DEhighlights a key on the screen """
         if self.data['hints']:
             self.player.host_layout.key_visibility(host_char, state='OFF')
             self.player.host_layout.screen.refresh()
@@ -104,10 +109,23 @@ class Game:
             print('Unknown state - choose either characters or words')
         return user_input.rstrip()
 
+    def update_score(self, in_key, host_char, target_character):
+        if in_key == host_char:
+            self.success += 1
+        else:
+            self.failed_characters.append(target_character)
+            self.fail += 1
+        self.player.host_layout.screen.addstr(8, 65, f'{self.success}')
+        self.player.host_layout.screen.addstr(9, 65, f'{self.fail}')
+
+    def print_results(self):
+        print(f'Pass: {self.success}')
+        print(f'Fail: {self.fail}')
+        if self.fail:
+            for failed in self.failed_characters:
+                print(f'Missed: {failed}')
+
     def run(self):
-        success = 0
-        fail = 0
-        failed_characters = list()
         keys_to_ignore = ['TAB', 'CAPS', 'SHIFT']
 
         self.player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
@@ -126,25 +144,12 @@ class Game:
             self.player.host_layout.screen.refresh()
 
             self.hint_on(host_char)
-
             in_key = self.accept_input()
-
             self.hint_off(host_char)
-
-            if in_key == host_char:
-                success += 1
-            else:
-                failed_characters.append(target_character)
-                fail += 1
-            self.player.host_layout.screen.addstr(8, 65, f'{success}')
-            self.player.host_layout.screen.addstr(9, 65, f'{fail}')
+            self.update_score(in_key, host_char, target_character)
 
         self.player.host_layout.screen_deinit()
-        print(f'Pass: {success}')
-        print(f'Fail: {fail}')
-        if fail:
-            for failed in failed_characters:
-                print(f'Missed: {failed}')
+        self.print_results()
 
 
 def main(game_file):
