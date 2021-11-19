@@ -126,16 +126,11 @@ class Game:
                 print(f'Missed: {failed}')
 
     def run(self):
-        keys_to_ignore = ['TAB', 'CAPS', 'SHIFT']
-
         self.player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
         self.setup_display()
 
         for game_round in range(self.data['number']):
             target_character = self.player.target.pick_random_key()
-
-            if len(target_character) > 3 or target_character in keys_to_ignore:
-                continue
             row, column = self.player.target_layout.\
                 keyboard.get_key_position(target_character)
             host_char = self.player.host_layout.keyboard.\
