@@ -1,3 +1,6 @@
+"""
+game.py - the exposed game system.
+"""
 from ast import literal_eval
 import configparser
 from keyplayer import KeyPlayer
@@ -17,7 +20,7 @@ class Label:
 
 
 class Game:
-    """
+    """Game - class definition for the game itself
     """
     def __init__(self, game_file):
         self.game_file = game_file
@@ -40,6 +43,8 @@ class Game:
         self.fail = 0
 
     def load_game(self):
+        """load_game - method for loading the game config file
+        """
         self.cfg_parser = configparser.\
             ConfigParser(converters={"any": lambda x: literal_eval(x)})
         try:
@@ -47,15 +52,22 @@ class Game:
         except FileNotFoundError:
             print(f'Sorry - file not found... {self.game_file}')
             raise FileNotFoundError
+            # TODO: something better than Exception - what do we hit?
         except Exception as e:
             print(f'Unexpected exception raised: {e}')
             raise e
         try:
             self._configure_game()
+            # TODO: something better than Exception - which one?
         except Exception as e:
             print(e)
 
     def _configure_game(self):
+        """_configure_game - assign tables/variables
+
+        Note: int values get converted from strings
+              booleans get converted from strings
+        """
         for entry in self.cfg_parser['Game']:
             if self.cfg_parser['Game'][entry].isdigit():
                 self.data[entry] =\
@@ -68,6 +80,11 @@ class Game:
                     self.cfg_parser['Game'][entry]
 
     def setup_display(self):
+        """setup_display - configuration of the screen
+
+        Note: generally, the labels are straight forward except
+              for the case when testing 'words'
+        """
         self.player.host_layout.screen_init()
         self.player.host_layout.show_keyboard(0, 0)
         if self.data['words']:
@@ -97,6 +114,8 @@ class Game:
             self.player.host_layout.screen.refresh()
 
     def accept_input(self):
+        """accept_input - handles user input for the game
+        """
         user_input = ''
         key_input = ''
         if self.data['characters']:
@@ -106,19 +125,35 @@ class Game:
                 key_input = chr(self.player.host_layout.screen.getch())
                 user_input += key_input
         else:
+            # probably change this to a custom Exception and raise it
             print('Unknown state - choose either characters or words')
         return user_input.rstrip()
 
-    def update_score(self, in_key, host_char, target_character):
+    def update_score(self, in_key, host_char, target_char):
+        """update_score - update the display of the score on the screen
+
+        Params:
+        in_key      (char) - the incoming key pressed
+        host_char   (char) - the key that corresponds to the hardware
+        target_char (char) - the learning key that we were hoping for
+
+        Returns:
+        n/a
+
+        Raises:
+        n/a
+        """
         if in_key == host_char:
             self.success += 1
         else:
-            self.failed_characters.append(target_character)
+            self.failed_characters.append(target_char)
             self.fail += 1
         self.player.host_layout.screen.addstr(8, 65, f'{self.success}')
         self.player.host_layout.screen.addstr(9, 65, f'{self.fail}')
 
     def print_results(self):
+        """print_results - final screen output of the user's score
+        """
         print(f'Pass: {self.success}')
         print(f'Fail: {self.fail}')
         if self.fail:
