@@ -14,6 +14,7 @@ class Key(object):
         visibility - int - whether or not the key is to be displayed
         lower - int - lower case characters
         upper - int - upper case characters
+
         Returns:
         n/a
 

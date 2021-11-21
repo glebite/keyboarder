@@ -5,6 +5,7 @@ from ast import literal_eval
 import configparser
 from keyplayer import KeyPlayer
 import sys
+import time
 
 
 class Label:
@@ -41,6 +42,9 @@ class Game:
         self.failed_characters = list()
         self.success = 0
         self.fail = 0
+        self.first_time = 0
+        self.last_time = 0
+        self.timed_records = dict()
 
     def load_game(self):
         """load_game - method for loading the game config file
@@ -129,6 +133,19 @@ class Game:
             print('Unknown state - choose either characters or words')
         return user_input.rstrip()
 
+    def start_clock(self):
+        if self.data['timed']:
+            self.first_time = time.time()
+
+    def stop_clock(self):
+        if self.data['timed']:
+            self.last_time = time.time()
+
+    def update_time(self, target):
+        if self.data['timed']:
+            delta = self.last_time - self.first_time
+            self.timed_records[target] = delta
+
     def update_score(self, in_key, host_char, target_char):
         """update_score - update the display of the score on the screen
 
@@ -159,6 +176,8 @@ class Game:
         if self.fail:
             for failed in self.failed_characters:
                 print(f'Missed: {failed}')
+        for key in self.timed_records:
+            print(key, self.timed_records[key])
 
     def run(self):
         """run - the core of the core of the game:
@@ -185,12 +204,16 @@ class Game:
                 keyboard.get_key_position(target_character)
             host_char = self.player.host_layout.keyboard.\
                 get_char_from_position(row, column)[0]
+
+            self.start_clock()
             self.player.host_layout.screen.addstr(5, 60, target_character)
             self.player.host_layout.screen.refresh()
 
             self.hint_on(host_char)
             in_key = self.accept_input()
+            self.stop_clock()
             self.hint_off(host_char)
+            self.update_time(target_character)
             self.update_score(in_key, host_char, target_character)
 
         self.player.host_layout.screen_deinit()
@@ -199,7 +222,9 @@ class Game:
 
 def main(game_file):
     g = Game(game_file)
+    print("loading...")
     g.load_game()
+    print("Loaded...")
     g.run()
 
 

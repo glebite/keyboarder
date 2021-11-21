@@ -75,4 +75,6 @@ class Keyboard(object):
         remove_list = ['TAB', 'CAPS', 'SHIFT']
         flat_list = [item for sublist in self.layout for item in sublist
                      if item.lower not in remove_list]
-        return random.choice(flat_list).lower
+        choice = random.choice(flat_list)
+        flat_list.remove(choice)
+        return choice.lower
