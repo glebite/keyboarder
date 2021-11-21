@@ -161,6 +161,21 @@ class Game:
                 print(f'Missed: {failed}')
 
     def run(self):
+        """run - the core of the core of the game:
+
+        Notes:
+            1) setup the keyboards
+            2) configure the display
+            3) loop through a range of characters (or words (TBD)) and:
+                a) pick a character (word)
+                b) display the desired character
+                c) display hinting or not
+                d) accept input from the user
+                e) turn hinting off
+                f) evaluate and update the current score 
+            4) close down the display
+            5) print the final results
+        """
         self.player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
         self.setup_display()
 
