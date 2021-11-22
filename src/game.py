@@ -176,8 +176,9 @@ class Game:
         if self.fail:
             for failed in self.failed_characters:
                 print(f'Missed: {failed}')
-        for key in self.timed_records:
-            print(key, self.timed_records[key])
+        if self.data['timed']:
+            for key, duration in self.timed_records.items():
+                print(f'Key: {key}   Duration: {duration}')
 
     def run(self):
         """run - the core of the core of the game:
