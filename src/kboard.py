@@ -1,4 +1,6 @@
 """
+kboard.py
+
 """
 from key import Key
 import csv
@@ -58,7 +60,7 @@ class Keyboard(object):
             self.process_rows(reader)
 
     def get_key_position(self, character):
-        """get_key_position
+        """get_key_position - return the row, col location of the character
         """
         if character in self.position:
             return self.position[character]
@@ -66,11 +68,13 @@ class Keyboard(object):
             return (-1, -1)
 
     def get_char_from_position(self, row, column):
-        """get_char_from_position
+        """get_char_from_position - find character based on row, column
         """
         return self.pos_map[(row, column)]
 
     def pick_random_key(self):
+        """pick_random_key - find a random key from the list of available keys
+        """
         # TODO: extract this from the keys
         remove_list = ['TAB', 'CAPS', 'SHIFT']
         flat_list = [item for sublist in self.layout for item in sublist

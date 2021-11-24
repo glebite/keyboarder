@@ -43,6 +43,9 @@ class Layout():
 
     def screen_init(self):
         """screen_init - curses initialization method
+
+        Turns on the screen, turns off echo, handling of control break and 
+        makes the cursor invisible.
         """
         self.screen = curses.initscr()
         curses.noecho()
@@ -50,23 +53,22 @@ class Layout():
         curses.curs_set(0)
 
     def screen_deinit(self):
-        """
+        """screen_deinit - break down the screen
+
+        Make the cursor visible again and close down curses.
         """
         try:
             curses.curs_set(1)
             curses.endwin()
         except Exception as e:
+            # TODO: be more specific
             print(f'Exception on close handled: {e}')
 
     def __del__(self):
-        try:
-            curses.curs_set(1)
-            curses.endwin()
-        except Exception as e:
-            print(f'Exception on close handled: {e}')
+        self.screen_deinit()
 
     def boxit(self, contents):
-        """
+        """boxit - draw a box around the contents to look like a key
         """
         box = UPPER_LEFT_CORNER
         for i in contents:
@@ -88,9 +90,12 @@ class Layout():
         return box
 
     def placeit(self, x, y, it):
+        """placeit - places a string on the screen at row, column
+        """
         row = y
         col = x
         for character in it:
+            # TODO: replace with drawing method
             self.screen.addstr(row, col, character)
             if character == "\n":
                 row += 1
@@ -99,6 +104,8 @@ class Layout():
                 col += 1
 
     def show_keyboard(self, row=1, column=1):
+        """show_keyboard - draw the keyboard at a location on the screen
+        """
         row_counter = 0
         for row_count, row_info in enumerate(self.keyboard.layout):
             pos = column
@@ -109,6 +116,10 @@ class Layout():
             row_counter += 3
 
     def snapshot(self):
+        """snapshot - returns a string containing the contents of the screen
+
+        TODO: still curses dependent, and need to change this out 
+        """
         height, width = self.screen.getmaxyx()
         screen = list()
         row_info = list()
@@ -120,6 +131,8 @@ class Layout():
         return screen
 
     def output_snapshot(self):
+        """output_snapshot - return a string containing text components of the screen
+        """
         snap = self.snapshot()
         lines = ''
         for row in snap:
@@ -145,6 +158,10 @@ class Layout():
         return (row, pos)
 
     def key_visibility(self, character, state='ON'):
+        """key_visibility - affects the reverse video option for a character
+
+        TODO: again, curses dependent and should be changed out
+        """
         row, column = self.calculate_position(character)
         if state == 'ON':
             self.screen.addstr(row, column, character, curses.A_STANDOUT)
