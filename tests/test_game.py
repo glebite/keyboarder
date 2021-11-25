@@ -1,6 +1,7 @@
 from game import Game
 from game import Label
 import configparser
+import time
 
 
 def test_game_creation():
@@ -119,3 +120,19 @@ def test_configure_game_extra_option():
         assert False
     except KeyError:
         assert True
+
+
+def test_update_time_defaults():
+    game = Game('data/game_3.cfg')
+    game.load_game()
+    assert game.update_time('a') == 0
+
+
+def test_update_time_normal():
+    game = Game('data/game_3.cfg')
+    game.load_game()
+    game.start_clock()
+    time.sleep(5)
+    game.stop_clock()
+    assert game.update_time('a') >= 5
+    
