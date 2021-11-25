@@ -170,6 +170,8 @@ class Game:
         else:
             self.failed_characters.append(target_char)
             self.fail += 1
+
+    def update_score_display(self):
         self.player.host_layout.screen.addstr(8, 65, f'{self.success}')
         self.player.host_layout.screen.addstr(9, 65, f'{self.fail}')
 
@@ -221,7 +223,8 @@ class Game:
             self.hint_off(host_char)
             self.update_time(target_character)
             self.update_score(in_key, host_char, target_character)
-
+            self.update_score_display()
+            
         self.player.host_layout.screen_deinit()
         self.print_results()
 
