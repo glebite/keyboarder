@@ -137,11 +137,16 @@ def test_update_time_normal():
     assert game.update_time('a') >= 5
     
 
-def test_update_score():
+def test_update_score_success():
     game = Game('data/game_3.cfg')
     game.load_game()
     game.update_score('a', 'a', 'A')
     assert game.success == 1
+
+
+def test_update_score_failure():
+    game = Game('data/game_3.cfg')
+    game.load_game()
     game.update_score('a', 'b', 'B')
     assert game.fail == 1
     assert game.failed_characters == ['B']
