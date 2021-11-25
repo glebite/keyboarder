@@ -44,7 +44,7 @@ class Layout():
     def screen_init(self):
         """screen_init - curses initialization method
 
-        Turns on the screen, turns off echo, handling of control break and 
+        Turns on the screen, turns off echo, handling of control break and
         makes the cursor invisible.
         """
         self.screen = curses.initscr()

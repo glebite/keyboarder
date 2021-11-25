@@ -3,6 +3,7 @@ game.py - the exposed game system.
 """
 from ast import literal_eval
 import configparser
+from configparser import DuplicateSectionError, DuplicateOptionError
 from keyplayer import KeyPlayer
 import sys
 import time
@@ -56,15 +57,12 @@ class Game:
         except FileNotFoundError:
             print(f'Sorry - file not found... {self.game_file}')
             raise FileNotFoundError
-            # TODO: something better than Exception - what do we hit?
-        except Exception as e:
-            print(f'Unexpected exception raised: {e}')
+        except DuplicateSectionError as e:
             raise e
-        try:
-            self._configure_game()
-            # TODO: something better than Exception - which one?
-        except Exception as e:
-            print(e)
+        except DuplicateOptionError as e:
+            raise e
+
+        self._configure_game()
 
     def _configure_game(self):
         """_configure_game - assign tables/variables
@@ -136,15 +134,18 @@ class Game:
     def start_clock(self):
         if self.data['timed']:
             self.first_time = time.time()
+        return self.first_time
 
     def stop_clock(self):
         if self.data['timed']:
             self.last_time = time.time()
+        return self.last_time
 
     def update_time(self, target):
         if self.data['timed']:
             delta = self.last_time - self.first_time
             self.timed_records[target] = delta
+        return self.timed_records[target]
 
     def update_score(self, in_key, host_char, target_char):
         """update_score - update the display of the score on the screen
@@ -192,7 +193,7 @@ class Game:
                 c) display hinting or not
                 d) accept input from the user
                 e) turn hinting off
-                f) evaluate and update the current score 
+                f) evaluate and update the current score
             4) close down the display
             5) print the final results
         """
@@ -221,7 +222,7 @@ class Game:
         self.print_results()
 
 
-def main(game_file):
+def main(game_file):  # pragma: nocover
     g = Game(game_file)
     print("loading...")
     g.load_game()
@@ -229,5 +230,5 @@ def main(game_file):
     g.run()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: nocover
     main(sys.argv[1])
