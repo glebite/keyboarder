@@ -105,3 +105,17 @@ def test_stop_clock_timed_not_set():
     last = game.first_time
     started = game.start_clock()
     assert last == 0 and started == 0
+
+
+def test_configure_game_missing_option():
+    game = Game('data/game_test_missing_option.cfg')
+    assert game.load_game() is False
+
+
+def test_configure_game_extra_option():
+    game = Game('data/game_test_extra_option.cfg')
+    try:
+        game.load_game()
+        assert False
+    except KeyError:
+        assert True

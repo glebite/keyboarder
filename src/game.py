@@ -62,7 +62,7 @@ class Game:
         except DuplicateOptionError as e:
             raise e
 
-        self._configure_game()
+        return self._configure_game()
 
     def _configure_game(self):
         """_configure_game - assign tables/variables
@@ -71,6 +71,8 @@ class Game:
               booleans get converted from strings
         """
         for entry in self.cfg_parser['Game']:
+            if entry not in self.data.keys():
+                raise KeyError
             if self.cfg_parser['Game'][entry].isdigit():
                 self.data[entry] =\
                     int(self.cfg_parser['Game'][entry])
@@ -80,6 +82,8 @@ class Game:
             else:
                 self.data[entry] =\
                     self.cfg_parser['Game'][entry]
+
+        return None not in self.data.values()
 
     def setup_display(self):
         """setup_display - configuration of the screen
