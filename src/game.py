@@ -146,6 +146,7 @@ class Game:
         return self.last_time
 
     def update_time(self, target):
+        self.timed_records[target] = 0
         if self.data['timed']:
             delta = self.last_time - self.first_time
             self.timed_records[target] = delta
@@ -198,7 +199,7 @@ class Game:
                 b) display the desired character
                 c) display hinting or not
                 d) accept input from the user
-                e) turn hinting off
+                e) turn hinting on
                 f) evaluate and update the current score
             4) close down the display
             5) print the final results
@@ -221,19 +222,18 @@ class Game:
             in_key = self.accept_input()
             self.stop_clock()
             self.hint_off(host_char)
+
             self.update_time(target_character)
             self.update_score(in_key, host_char, target_character)
             self.update_score_display()
-            
+
         self.player.host_layout.screen_deinit()
         self.print_results()
 
 
 def main(game_file):  # pragma: nocover
     g = Game(game_file)
-    print("loading...")
     g.load_game()
-    print("Loaded...")
     g.run()
 
 
