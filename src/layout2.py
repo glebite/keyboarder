@@ -48,8 +48,9 @@ class Layout():
         makes the cursor invisible.
         """
         self.screen = curses.initscr()
+        if not self.screen:
+            print("Problem opening the window...")
         curses.noecho()
-        curses.cbreak()
         curses.curs_set(0)
 
     def screen_deinit(self):

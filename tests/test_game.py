@@ -153,11 +153,10 @@ def test_update_score_failure():
     assert game.failed_characters == ['B']
 
 
-# def test_bring_up_screen():
-#     game = Game('data/game_3.cfg')
-#     game.load_game()
-#     game.player = KeyPlayer('src/'+game.data['host_kbd'],
-#                             'src/'+game.data['target_kbd'])
-#     print(game.player.
-#     game.setup_display()
-#     game.player.host_layout.screen_deinit()
+def test_bring_up_screen():
+    game = Game('data/game_3.cfg')
+    game.load_game()
+    game.player = KeyPlayer('src/'+game.data['host_kbd'],
+                            'src/'+game.data['target_kbd'])
+    game.setup_display()
+    game.player.host_layout.screen_deinit()

@@ -121,6 +121,7 @@ class Game:
 
     def accept_input(self):
         """accept_input - handles user input for the game
+
         """
         user_input = ''
         key_input = ''
@@ -237,5 +238,5 @@ def main(game_file):  # pragma: nocover
     g.run()
 
 
-if __name__ == "__main__": # pragma: nocover
+if __name__ == "__main__":  # pragma: nocover
     main(sys.argv[1])
