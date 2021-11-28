@@ -116,34 +116,6 @@ class Layout():
                 pos += len(char.lower) + 2
             row_counter += 3
 
-    def snapshot(self):
-        """snapshot - returns a string containing the contents of the screen
-
-        TODO: still curses dependent, and need to change this out 
-        """
-        height, width = self.screen.getmaxyx()
-        screen = list()
-        row_info = list()
-        for row in range(height):
-            for col in range(width):
-                row_info.append(self.screen.inch(row, col))
-            screen.append(row_info)
-            row_info = []
-        return screen
-
-    def output_snapshot(self):
-        """output_snapshot - return a string containing text components of the screen
-        """
-        snap = self.snapshot()
-        lines = ''
-        for row in snap:
-            for col_char in row:
-                if col_char > 255:
-                    col_char = 0
-                lines += chr(int(col_char))
-            lines += '\n\r'
-        return lines
-
     def calculate_position(self, character):
         # TODO: get_key_position should raise Exception instead
         key_row, key_column = self.keyboard.get_key_position(character)
@@ -190,14 +162,24 @@ class Layout():
                 output.append(key.lower)
         return output
 
+    def screen_dump(self):
+        screen = dict()
+        rows, cols = self.screen.getmaxyx()
+        for row in range(rows):
+            for col in range(cols):
+                screen[f'{row},{col}'] = self.screen.inch(row, col)
+        return screen
+
 
 def main():
     physical = Layout('English.csv')
-    training = Layout('Farsi_RTL.csv')
+    # training = Layout('Farsi_RTL.csv')
     physical.screen_init()
     physical.show_keyboard(0, 0)
     physical.screen.refresh()
-    physical.demo_cool(training)
+    physical.screen_deinit()
+    print(physical.screen_dump())
+    time.sleep(10)
 
 
 if __name__ == "__main__":

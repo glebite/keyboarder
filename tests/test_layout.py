@@ -1,7 +1,8 @@
 # from layout2 import Layout
 # import layout2
 from layout2 import Layout, UPPER_LEFT_CORNER, UPPER_RIGHT_CORNER,\
-    HORIZONTAL_BAR, VERTICAL_BAR, LOWER_LEFT_CORNER, LOWER_RIGHT_CORNER
+    HORIZONTAL_BAR, VERTICAL_BAR, LOWER_LEFT_CORNER, LOWER_RIGHT_CORNER,\
+    RTL, RTLPOP
 
 
 def test_layout_creation():
@@ -44,3 +45,15 @@ def test_boxit():
         VERTICAL_BAR + 'a' + VERTICAL_BAR + '\n' +\
         LOWER_LEFT_CORNER + HORIZONTAL_BAR + LOWER_RIGHT_CORNER + '\n'
     assert result == constructed
+
+
+def test_boxit_RTL():
+    board = Layout('src/Farsi_RTL.csv')
+    result = board.boxit('ا')
+    constructed = UPPER_LEFT_CORNER + HORIZONTAL_BAR +\
+        UPPER_RIGHT_CORNER + '\n' +\
+        VERTICAL_BAR + f'{RTL}ا{RTLPOP}' + VERTICAL_BAR + '\n' +\
+        LOWER_LEFT_CORNER + HORIZONTAL_BAR + LOWER_RIGHT_CORNER + '\n'
+    assert result == constructed
+
+

@@ -3,6 +3,17 @@ from game import Label
 from keyplayer import KeyPlayer
 import configparser
 import time
+import curses
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def shutdown_screen():
+    yield
+    try:
+        curses.endwin()
+    except curses.error:
+        pass
 
 
 def test_game_creation():
