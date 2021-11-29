@@ -144,10 +144,10 @@ def test_update_time_normal():
     game = Game('data/game_3.cfg')
     game.load_game()
     game.start_clock()
-    time.sleep(5)
+    time.sleep(1)
     game.stop_clock()
-    assert game.update_time('a') >= 5
-    
+    assert game.update_time('a') >= 1
+
 
 def test_update_score_success():
     game = Game('data/game_3.cfg')
@@ -171,3 +171,83 @@ def test_bring_up_screen():
                             'src/'+game.data['target_kbd'])
     game.setup_display()
     game.player.host_layout.screen_deinit()
+
+
+def test_bring_up_current_word():
+    game = Game('data/game_5.cfg')
+    game.load_game()
+    game.player = KeyPlayer('src/'+game.data['host_kbd'],
+                            'src/'+game.data['target_kbd'])
+    game.setup_display()
+    screen = game.player.host_layout.screen_dump()
+    expected = "Current word:"
+    for i, value in enumerate(expected, start=55):
+        read_value = screen[f'4,{i}']
+        assert ord(value) == read_value, f'Read: {read_value}'\
+            f' ({chr(read_value)}) expecting:'\
+            f' {ord(value)} ({value}) for {i}'
+    game.player.host_layout.screen_deinit()
+
+
+def test_hinting_on():
+    game = Game('data/game_1.cfg')
+    game.load_game()
+    game.player = KeyPlayer('src/'+game.data['host_kbd'],
+                            'src/'+game.data['target_kbd'])
+    game.setup_display()
+    game.hint_on('1')
+    screen = game.player.host_layout.screen_dump()
+    expected = ord('1')
+    value = screen['1,4']
+    expected = ord('1') | curses.A_STANDOUT
+    assert value == expected, f'Expected {expected}, got {value} instead.'
+    game.player.host_layout.screen_deinit()
+
+
+def test_key_hint_off():
+    game = Game('data/game_1.cfg')
+    game.load_game()
+    game.player = KeyPlayer('src/'+game.data['host_kbd'],
+                            'src/'+game.data['target_kbd'])
+    game.setup_display()
+    game.hint_on('1')
+    game.hint_off('1')
+    screen = game.player.host_layout.screen_dump()
+    value = screen['1,4']
+    expected = ord('1')
+    assert value == expected, f'Expected {expected}, got {value} instead.'
+    game.player.host_layout.screen_deinit()
+
+
+def test_update_score_display():
+    game = Game('data/game_5.cfg')
+    game.load_game()
+    game.player = KeyPlayer('src/'+game.data['host_kbd'],
+                            'src/'+game.data['target_kbd'])
+    game.setup_display()
+
+    game.fail = 5
+    game.success = 3
+    game.update_score_display()
+    screen = game.player.host_layout.screen_dump()
+
+    expected = "3"
+    read_value = screen['8,65']
+    assert chr(read_value) == expected
+    expected = "5"
+    read_value = screen['9,65']
+    assert chr(read_value) == expected
+    game.player.host_layout.screen_deinit()
+
+
+def test_print_results_no_fails(capsys):
+    game = Game('data/game_1.cfg')
+    game.load_game()
+    game.player = KeyPlayer('src/'+game.data['host_kbd'],
+                            'src/'+game.data['target_kbd'])
+    game.success = 20
+    game.fail = 0
+    captured = capsys.readouterr()
+    game.print_results()
+    print(f'Output: {captured.out}')
+    

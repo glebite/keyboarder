@@ -3,6 +3,7 @@
 from layout2 import Layout, UPPER_LEFT_CORNER, UPPER_RIGHT_CORNER,\
     HORIZONTAL_BAR, VERTICAL_BAR, LOWER_LEFT_CORNER, LOWER_RIGHT_CORNER,\
     RTL, RTLPOP
+import curses
 
 
 def test_layout_creation():
@@ -57,3 +58,36 @@ def test_boxit_RTL():
     assert result == constructed
 
 
+def test_key_position_default():
+    board = Layout('src/English.csv')
+    board.screen_init()
+    board.show_keyboard(0, 0)
+    screen = board.screen_dump()
+    value = screen['1,4']
+    assert value == 49, f'Expected 49, got {value} instead.'
+    board.screen_deinit()
+
+
+def test_key_hint_on():
+    board = Layout('src/English.csv')
+    board.screen_init()
+    board.show_keyboard(0, 0)
+    board.key_visibility('1')
+    screen = board.screen_dump()
+    value = screen['1,4']
+    expected = ord('1') | curses.A_STANDOUT
+    assert value == expected, f'Expected {expected}, got {value} instead.'
+    board.screen_deinit()
+
+
+def test_key_hint_off():
+    board = Layout('src/English.csv')
+    board.screen_init()
+    board.show_keyboard(0, 0)
+    board.key_visibility('1')
+    board.key_visibility('1', 'OFF')
+    screen = board.screen_dump()
+    value = screen['1,4']
+    expected = ord('1')
+    assert value == expected, f'Expected {expected}, got {value} instead.'
+    board.screen_deinit()

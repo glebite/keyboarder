@@ -142,19 +142,6 @@ class Layout():
             self.screen.addstr(row, column, character, curses.A_NORMAL)
         self.screen.refresh()
 
-    def demo_cool(self, layout):
-        for row in layout.keyboard.layout:
-            for key in row:
-                other_char = key.lower
-                row, column = layout.keyboard.get_key_position(other_char)
-                char = self.keyboard.get_char_from_position(row, column)[0]
-                if len(char) > 1:
-                    continue
-                self.screen.addstr(5, 60, other_char)
-                self.key_visibility(char, state='ON')
-                time.sleep(0.5)
-                self.key_visibility(char, state='OFF')
-
     def dump_keyboard(self):
         output = list()
         for row in self.keyboard.layout:
@@ -169,18 +156,3 @@ class Layout():
             for col in range(cols):
                 screen[f'{row},{col}'] = self.screen.inch(row, col)
         return screen
-
-
-def main():
-    physical = Layout('English.csv')
-    # training = Layout('Farsi_RTL.csv')
-    physical.screen_init()
-    physical.show_keyboard(0, 0)
-    physical.screen.refresh()
-    physical.screen_deinit()
-    print(physical.screen_dump())
-    time.sleep(10)
-
-
-if __name__ == "__main__":
-    main()

@@ -94,7 +94,9 @@ class Game:
         self.player.host_layout.screen_init()
         self.player.host_layout.show_keyboard(0, 0)
         if self.data['words']:
-            self.goal_label = Label(4, 55, 'Current word:')
+            print('Hey this is crazy...')
+            self.goal_label = Label('Current word:', 4, 55)
+            print('This could be crazy too!')
         for label in [self.goal_label,
                       self.score_label,
                       self.pass_label,
@@ -176,6 +178,7 @@ class Game:
     def update_score_display(self):
         self.player.host_layout.screen.addstr(8, 65, f'{self.success}')
         self.player.host_layout.screen.addstr(9, 65, f'{self.fail}')
+        self.player.host_layout.screen.refresh()
 
     def print_results(self):
         """print_results - final screen output of the user's score
