@@ -247,7 +247,43 @@ def test_print_results_no_fails(capsys):
                             'src/'+game.data['target_kbd'])
     game.success = 20
     game.fail = 0
-    captured = capsys.readouterr()
+
     game.print_results()
-    print(f'Output: {captured.out}')
-    
+    captured = capsys.readouterr()
+
+    assert 'Pass: 20' in captured.out
+    assert 'Fail: 0' in captured.out
+
+
+def test_print_results__fails(capsys):
+    game = Game('data/game_1.cfg')
+    game.load_game()
+    game.player = KeyPlayer('src/'+game.data['host_kbd'],
+                            'src/'+game.data['target_kbd'])
+    game.success = 19
+    game.fail = 1
+    game.failed_characters.append('a')
+
+    game.print_results()
+    captured = capsys.readouterr()
+
+    assert 'Pass: 19' in captured.out
+    assert 'Fail: 1' in captured.out
+    assert 'Missed: a' in captured.out
+
+
+def test_print_results_timed(capsys):
+    game = Game('data/game_1.cfg')
+    game.load_game()
+    game.player = KeyPlayer('src/'+game.data['host_kbd'],
+                            'src/'+game.data['target_kbd'])
+    game.success = 19
+    game.fail = 1
+    game.data['timed'] = True
+    game.timed_records['a'] = 0
+    game.failed_characters.append('a')
+
+    game.print_results()
+    captured = capsys.readouterr()
+
+    assert 'Key: a   Duration: 0' in captured.out
