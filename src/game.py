@@ -46,6 +46,8 @@ class Game:
         self.first_time = 0
         self.last_time = 0
         self.timed_records = dict()
+        self.inject = False
+        self.injected_value = ""
 
     def load_game(self):
         """load_game - method for loading the game config file
@@ -94,9 +96,7 @@ class Game:
         self.player.host_layout.screen_init()
         self.player.host_layout.show_keyboard(0, 0)
         if self.data['words']:
-            print('Hey this is crazy...')
             self.goal_label = Label('Current word:', 4, 55)
-            print('This could be crazy too!')
         for label in [self.goal_label,
                       self.score_label,
                       self.pass_label,
@@ -128,14 +128,19 @@ class Game:
         user_input = ''
         key_input = ''
         if self.data['characters']:
-            user_input = chr(self.player.host_layout.screen.getch())
+            if self.inject:
+                user_input = self.injected_value
+            else:
+                user_input = chr(self.player.host_layout.screen.getch())
         elif self.data['words']:
-            while key_input != '\n':
-                key_input = chr(self.player.host_layout.screen.getch())
-                user_input += key_input
+            if self.inject:
+                user_input = self.injected_value
+            else:
+                while key_input != '\n':
+                    key_input = chr(self.player.host_layout.screen.getch())
+                    user_input += key_input
         else:
-            # probably change this to a custom Exception and raise it
-            print('Unknown state - choose either characters or words')
+            raise ValueError
         return user_input.rstrip()
 
     def start_clock(self):
