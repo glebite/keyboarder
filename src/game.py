@@ -222,22 +222,18 @@ class Game:
         self.setup_display()
 
         for game_round in range(self.data['number']):
-            target_character = self.player.target.pick_random_key()
-            row, column = self.player.target_layout.\
-                keyboard.get_key_position(target_character)
-            host_char = self.player.host_layout.keyboard.\
-                get_char_from_position(row, column)[0]
+            target_char, host_char = self.player.from_target_pick_host()
 
             self.start_clock()
-            self.player.host_layout.write_label(5, 60, target_character)
+            self.player.host_layout.write_label(5, 60, target_char)
 
             self.hint_on(host_char)
             in_key = self.accept_input()
             self.stop_clock()
             self.hint_off(host_char)
 
-            self.update_time(target_character)
-            self.update_score(in_key, host_char, target_character)
+            self.update_time(target_char)
+            self.update_score(in_key, host_char, target_char)
             self.update_score_display()
 
         self.player.host_layout.screen_deinit()
