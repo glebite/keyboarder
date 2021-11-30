@@ -156,3 +156,7 @@ class Layout():
             for col in range(cols):
                 screen[f'{row},{col}'] = self.screen.inch(row, col)
         return screen
+
+    def write_label(self, row, column, string):
+        self.screen.addstr(row, column, string)
+        self.screen.refresh()

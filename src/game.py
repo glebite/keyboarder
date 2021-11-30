@@ -105,26 +105,28 @@ class Game:
         self.player.host_layout.screen.refresh()
 
     def write_label(self, label):
-        self.player.host_layout.screen.addstr(label.row,
-                                              label.column,
-                                              label.description)
+        """write_label - output a label to the screen """
+        self.player.host_layout.write_label(label.row,
+                                            label.column,
+                                            label.description)
 
     def hint_on(self, host_char):
         """hint_on - highlights a key on the screen """
+        # TODO: hint_on screen indirectly
         if self.data['hints']:
             self.player.host_layout.key_visibility(host_char, state='ON')
-            self.player.host_layout.screen.refresh()
 
     def hint_off(self, host_char):
         """hint_off - DEhighlights a key on the screen """
+        # TODO: hint_off screen indirectly
         if self.data['hints']:
             self.player.host_layout.key_visibility(host_char, state='OFF')
-            self.player.host_layout.screen.refresh()
 
     def accept_input(self):
         """accept_input - handles user input for the game
 
         """
+        # TODO: accept_input screen directly
         user_input = ''
         key_input = ''
         if self.data['characters']:
@@ -144,16 +146,19 @@ class Game:
         return user_input.rstrip()
 
     def start_clock(self):
+        """start_clock - sets the initial timing for a given input """
         if self.data['timed']:
             self.first_time = time.time()
         return self.first_time
 
     def stop_clock(self):
+        """start_clock - stops the initial timing for a given input """
         if self.data['timed']:
             self.last_time = time.time()
         return self.last_time
 
     def update_time(self, target):
+        """update_time - updates delta for a given target"""
         self.timed_records[target] = 0
         if self.data['timed']:
             delta = self.last_time - self.first_time
@@ -181,9 +186,8 @@ class Game:
             self.fail += 1
 
     def update_score_display(self):
-        self.player.host_layout.screen.addstr(8, 65, f'{self.success}')
-        self.player.host_layout.screen.addstr(9, 65, f'{self.fail}')
-        self.player.host_layout.screen.refresh()
+        self.player.host_layout.write_label(8, 65, f'{self.success}')
+        self.player.host_layout.write_label(9, 65, f'{self.fail}')
 
     def print_results(self):
         """print_results - final screen output of the user's score
@@ -213,6 +217,7 @@ class Game:
             4) close down the display
             5) print the final results
         """
+        # TODO: run screen indirectly
         self.player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
         self.setup_display()
 
@@ -224,8 +229,7 @@ class Game:
                 get_char_from_position(row, column)[0]
 
             self.start_clock()
-            self.player.host_layout.screen.addstr(5, 60, target_character)
-            self.player.host_layout.screen.refresh()
+            self.player.host_layout.write_label(5, 60, target_character)
 
             self.hint_on(host_char)
             in_key = self.accept_input()
