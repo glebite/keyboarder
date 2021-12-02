@@ -14,6 +14,8 @@ class KeyPlayer(object):
         self.host_layout = layout2.Layout(host_kbd)
 
     def from_target_pick_host(self):
+        """from_target_pick_host
+        """
         target_character = self.target.pick_random_key()
         row, column = self.target_layout.\
             keyboard.get_key_position(target_character)
