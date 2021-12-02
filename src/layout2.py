@@ -1,6 +1,5 @@
 import kboard
 import curses
-import time
 """
 
 Assuming placement of (plc_row=0, plc_column=0)
