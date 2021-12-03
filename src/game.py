@@ -23,6 +23,15 @@ class Label:
 
 class Game:
     """Game - class definition for the game itself
+
+    params:
+    game_file - string - file name of the game config
+
+    returns:
+    n/a
+
+    raises:
+    n/a
     """
     def __init__(self, game_file):
         self.game_file = game_file
@@ -36,6 +45,7 @@ class Game:
                      'word_file': None,
                      'host_kbd': None,
                      'target_kbd': None}
+        # TODO: move these out to a layout config file or something
         self.goal_label = Label('Current Character:', 4, 55)
         self.score_label = Label('Score:', 7, 55)
         self.pass_label = Label('Pass:', 8, 55)
@@ -51,6 +61,17 @@ class Game:
 
     def load_game(self):
         """load_game - method for loading the game config file
+
+        params:
+        n/a
+
+        returns:
+        True/False - bool based on whether the game config could load
+
+        raises:
+        FileNotFoundError if the config file is not found
+        DuplicateSectionError if a duplicate section is in the config file
+        DuplicateOptionError if there is a duplicate option in the config file
         """
         self.cfg_parser = configparser.\
             ConfigParser(converters={"any": lambda x: literal_eval(x)})
@@ -92,6 +113,15 @@ class Game:
 
         Note: generally, the labels are straight forward except
               for the case when testing 'words'
+
+        params:
+        n/a
+
+        returns:
+        n/a
+
+        raises:
+        n/a
         """
         self.player.host_layout.screen_init()
         self.player.host_layout.show_keyboard(0, 0)

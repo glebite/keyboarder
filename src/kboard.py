@@ -22,13 +22,13 @@ class Keyboard(object):
     def process_rows(self, reader):
         """process_rows - process rows of CSV data and populate the keyboard
 
-        Params:
+        params:
         reader - CSVReader - used to retrieve lines
 
-        Returns:
+        returns:
         n/a
 
-        Raises:
+        raises:
         n/a
         """
         temp_row = list()
@@ -79,6 +79,7 @@ class Keyboard(object):
         remove_list = ['TAB', 'CAPS', 'SHIFT']
         flat_list = [item for sublist in self.layout for item in sublist
                      if item.lower not in remove_list]
+        
         choice = random.choice(flat_list)
         flat_list.remove(choice)
         return choice.lower
