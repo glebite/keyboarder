@@ -25,5 +25,5 @@ def test_gameengine_starts(gameengineflask):
 
 
 def test_gameengine_postpingtime(gameengineflask):
-    r = requests.post('http://localhost:5000/pingtime', data={'pingtime': 5})
+    r = requests.post('http://localhost:5000/pingtime', data='{"data": 5}')
     assert r.status_code == 200
