@@ -6,6 +6,7 @@ import json
 import configparser
 from configparser import DuplicateSectionError, DuplicateOptionError
 from ast import literal_eval
+from glob import glob
 
 
 class GameEngine(Flask):
@@ -14,13 +15,18 @@ class GameEngine(Flask):
         self.config_file = config_file
         self.pingtime = 0
         self.data = {'game_config_path': None}
-
+        self.load_game()
+        
         self.add_url_rule('/ping', view_func=self.ping_handler,
                           methods=['GET'])
 
         self.add_url_rule('/pingtime',
                           view_func=self.pingtime_handler,
                           methods=['POST'])
+
+        self.add_url_rule('/list_games',
+                          view_func=self.list_game_handler,
+                          methods=['GET'])
 
     def load_game(self):
         """load_game - method for loading the game config file
@@ -39,9 +45,9 @@ class GameEngine(Flask):
         self.cfg_parser = configparser.\
             ConfigParser(converters={"any": lambda x: literal_eval(x)})
         try:
-            self.cfg_parser.read_file(open(self.game_file, 'r'))
+            self.cfg_parser.read_file(open(self.config_file, 'r'))
         except FileNotFoundError:
-            print(f'Sorry - file not found... {self.game_file}')
+            print(f'Sorry - file not found... {self.config_file}')
             raise FileNotFoundError
         except DuplicateSectionError as e:
             raise e
@@ -79,7 +85,11 @@ class GameEngine(Flask):
         self.pingtime = data['data']
         return f'pong changed now to {self.pingtime}'
 
+    def list_game_handler(self):
+        files = glob(self.data['game_config_path'] + '/game_*.cfg')
+        return str(files)
+
 
 if __name__ == "__main__":
-    x = GameEngine("game")
+    x = GameEngine("game", "./keyboarder.cfg")
     x.run()

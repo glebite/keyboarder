@@ -15,7 +15,7 @@ def gameengineflask():
 
 
 def test_gameengine_creation():
-    ge = GameEngine("Keyboarder")
+    ge = GameEngine("Keyboarder", "src/keyboarder.cfg")
     assert ge, 'Could not create GameEngine'
 
 
@@ -27,3 +27,9 @@ def test_gameengine_starts(gameengineflask):
 def test_gameengine_postpingtime(gameengineflask):
     r = requests.post('http://localhost:5000/pingtime', data='{"data": 5}')
     assert r.status_code == 200
+
+
+def test_list_games(gameengineflask):
+    r = requests.get('http://localhost:5000/list_games')
+    assert r.status_code == 200
+    assert 'game_1.cfg' in r.text
