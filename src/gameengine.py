@@ -91,5 +91,5 @@ class GameEngine(Flask):
 
 
 if __name__ == "__main__":
-    x = GameEngine("game", "./keyboarder.cfg")
+    x = GameEngine("game", "src/keyboarder.cfg")
     x.run()
