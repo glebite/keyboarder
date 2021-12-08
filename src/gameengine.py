@@ -15,18 +15,23 @@ class GameEngine(Flask):
         self.config_file = config_file
         self.pingtime = 0
         self.data = {'game_config_path': None}
+        self.game_chosen = None
         self.load_game()
-        
-        self.add_url_rule('/ping', view_func=self.ping_handler,
+
+        self.add_url_rule('/ping', view_func=self.ping_handler_rule,
                           methods=['GET'])
 
         self.add_url_rule('/pingtime',
-                          view_func=self.pingtime_handler,
+                          view_func=self.pingtime_handler_rule,
                           methods=['POST'])
 
         self.add_url_rule('/list_games',
-                          view_func=self.list_game_handler,
+                          view_func=self.list_game_handler_rule,
                           methods=['GET'])
+
+        self.add_url_rule('/game_choice',
+                          view_func=self.game_choice_rule,
+                          methods=['GET', 'POST'])
 
     def load_game(self):
         """load_game - method for loading the game config file
@@ -77,17 +82,28 @@ class GameEngine(Flask):
 
         return None not in self.data.values()
 
-    def ping_handler(self):
+    def ping_handler_rule(self):
         return f'pong is {self.pingtime}'
 
-    def pingtime_handler(self):
+    def pingtime_handler_rule(self):
         data = json.loads(request.get_data())
         self.pingtime = data['data']
         return f'pong changed now to {self.pingtime}'
 
-    def list_game_handler(self):
+    def list_game_handler_rule(self):
         files = glob(self.data['game_config_path'] + '/game_*.cfg')
         return str(files)
+
+    def game_choice_rule(self):
+        method = request.method
+        if method == 'GET':
+            return str(self.game_chosen)
+        elif method == 'POST':
+            data = json.loads(request.get_data())
+            self.game_chosen = data['game_choice']
+            return 'OK'
+        else:
+            return 'NOK'
 
 
 if __name__ == "__main__":
