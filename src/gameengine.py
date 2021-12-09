@@ -97,13 +97,13 @@ class GameEngine(Flask):
     def game_choice_rule(self):
         method = request.method
         if method == 'GET':
-            return str(self.game_chosen)
+            return str(self.game_chosen), 200
         elif method == 'POST':
             data = json.loads(request.get_data())
             self.game_chosen = data['game_choice']
-            return 'OK'
+            return 'OK', 200
         else:
-            return 'NOK'
+            return 'Not Supported', 405
 
 
 if __name__ == "__main__":

@@ -41,7 +41,8 @@ def test_default_game_choice(gameengineflask):
 
 
 def test_set_game_choice(gameengineflask):
-    r = requests.post('http://localhost:5000/game_choice', data='{"game_choice": 3}')
+    r = requests.post('http://localhost:5000/game_choice',
+                      data='{"game_choice": 3}')
     assert r.status_code == 200
     r = requests.get('http://localhost:5000/game_choice')
     assert r.status_code == 200
