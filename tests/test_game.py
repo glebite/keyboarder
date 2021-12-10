@@ -351,20 +351,3 @@ def test_user_non_injected_input_one_character():
     game.player.host_layout.screen_deinit()
     assert value == 'z'
 
-
-# def test_user_non_injected_input_string(monkeypatch):
-#     game = Game('data/game_1.cfg')
-#     game.load_game()
-#     game.player = KeyPlayer('src/'+game.data['host_kbd'],
-#                             'src/'+game.data['target_kbd'])
-
-#     game.data['characters'] = False
-#     game.data['words'] = True
-#     game.inject = False
-#     game.setup_display()
-#     string_input = StringIO('this\n')
-#     monkeypatch.setattr('sys.stdin', string_input)
-#     curses.typeahead(sys.__stdin__.fileno())
-#     value = game.accept_input()
-#     game.player.host_layout.screen_deinit()
-#     assert value == 'this'

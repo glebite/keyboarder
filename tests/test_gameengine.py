@@ -2,6 +2,7 @@ import pytest
 import subprocess
 import requests
 import time
+import configparser
 from gameengine import GameEngine
 
 
@@ -17,16 +18,6 @@ def gameengineflask():
 def test_gameengine_creation():
     ge = GameEngine("Keyboarder", "src/keyboarder.cfg")
     assert ge, 'Could not create GameEngine'
-
-
-def test_gameengine_starts(gameengineflask):
-    r = requests.get('http://localhost:5000/ping')
-    assert r.status_code == 200
-
-
-def test_gameengine_postpingtime(gameengineflask):
-    r = requests.post('http://localhost:5000/pingtime', data='{"data": 5}')
-    assert r.status_code == 200
 
 
 def test_list_games(gameengineflask):
@@ -47,3 +38,20 @@ def test_set_game_choice(gameengineflask):
     r = requests.get('http://localhost:5000/game_choice')
     assert r.status_code == 200
     assert r.text == '3'
+
+
+def test_gameengine_config_does_not_exist():
+    try:
+        GameEngine('name', '../data/game_doesnotexist.cfg')
+        assert False
+    except FileNotFoundError:
+        assert True
+
+
+def test_game_invalid_config_file():
+    try:
+        GameEngine('name', 'README.md')
+        assert False, "README.md is not a config file and should have" \
+            " thrown an exception - MissingSectionHeaderError."
+    except configparser.MissingSectionHeaderError:
+        assert True

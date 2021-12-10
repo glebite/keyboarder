@@ -18,13 +18,6 @@ class GameEngine(Flask):
         self.game_chosen = None
         self.load_game()
 
-        self.add_url_rule('/ping', view_func=self.ping_handler_rule,
-                          methods=['GET'])
-
-        self.add_url_rule('/pingtime',
-                          view_func=self.pingtime_handler_rule,
-                          methods=['POST'])
-
         self.add_url_rule('/list_games',
                           view_func=self.list_game_handler_rule,
                           methods=['GET'])
@@ -47,19 +40,17 @@ class GameEngine(Flask):
         DuplicateSectionError if a duplicate section is in the config file
         DuplicateOptionError if there is a duplicate option in the config file
         """
-        self.cfg_parser = configparser.\
-            ConfigParser(converters={"any": lambda x: literal_eval(x)})
         try:
+            self.cfg_parser = configparser.\
+                ConfigParser(converters={"any": lambda x: literal_eval(x)})
             self.cfg_parser.read_file(open(self.config_file, 'r'))
+            return self._configure_game()
         except FileNotFoundError:
-            print(f'Sorry - file not found... {self.config_file}')
             raise FileNotFoundError
         except DuplicateSectionError as e:
             raise e
         except DuplicateOptionError as e:
             raise e
-
-        return self._configure_game()
 
     def _configure_game(self):
         """_configure_game - assign tables/variables
@@ -81,14 +72,6 @@ class GameEngine(Flask):
                     self.cfg_parser['GameEngine'][entry]
 
         return None not in self.data.values()
-
-    def ping_handler_rule(self):
-        return f'pong is {self.pingtime}'
-
-    def pingtime_handler_rule(self):
-        data = json.loads(request.get_data())
-        self.pingtime = data['data']
-        return f'pong changed now to {self.pingtime}'
 
     def list_game_handler_rule(self):
         files = glob(self.data['game_config_path'] + '/game_*.cfg')
