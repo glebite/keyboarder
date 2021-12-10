@@ -16,7 +16,7 @@ class GameEngine(Flask):
         self.pingtime = 0
         self.data = {'game_config_path': None}
         self.game_chosen = None
-        self.load_game()
+        self.load_gameengine_config()
 
         self.add_url_rule('/list_games',
                           view_func=self.list_game_handler_rule,
@@ -26,7 +26,7 @@ class GameEngine(Flask):
                           view_func=self.game_choice_rule,
                           methods=['GET', 'POST'])
 
-    def load_game(self):
+    def load_gameengine_config(self):
         """load_game - method for loading the game config file
 
         params:
@@ -44,7 +44,7 @@ class GameEngine(Flask):
             self.cfg_parser = configparser.\
                 ConfigParser(converters={"any": lambda x: literal_eval(x)})
             self.cfg_parser.read_file(open(self.config_file, 'r'))
-            return self._configure_game()
+            return self._configure_gameengine()
         except FileNotFoundError:
             raise FileNotFoundError
         except DuplicateSectionError as e:
@@ -52,7 +52,7 @@ class GameEngine(Flask):
         except DuplicateOptionError as e:
             raise e
 
-    def _configure_game(self):
+    def _configure_gameengine(self):
         """_configure_game - assign tables/variables
 
         Note: int values get converted from strings
@@ -74,10 +74,12 @@ class GameEngine(Flask):
         return None not in self.data.values()
 
     def list_game_handler_rule(self):
+        # from GET /listgames
         files = glob(self.data['game_config_path'] + '/game_*.cfg')
-        return str(files)
+        return str(files), 200
 
     def game_choice_rule(self):
+        # from GET | POST /gamechoice
         method = request.method
         if method == 'GET':
             return str(self.game_chosen), 200

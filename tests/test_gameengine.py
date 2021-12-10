@@ -9,10 +9,10 @@ from gameengine import GameEngine
 @pytest.fixture()
 def gameengineflask():
     proc = subprocess.Popen('src/gameengine.py')
-    time.sleep(5)
+    time.sleep(1)
     yield "resource"
     proc.kill()
-    time.sleep(5)
+    time.sleep(1)
 
 
 def test_gameengine_creation():
@@ -55,3 +55,8 @@ def test_game_invalid_config_file():
             " thrown an exception - MissingSectionHeaderError."
     except configparser.MissingSectionHeaderError:
         assert True
+
+
+def test_gameengine_bad_method_choice(gameengineflask):
+    r = requests.delete('http://localhost:5000/game_choice')
+    assert r.status_code == 405
