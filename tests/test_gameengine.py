@@ -60,3 +60,9 @@ def test_game_invalid_config_file():
 def test_gameengine_bad_method_choice(gameengineflask):
     r = requests.delete('http://localhost:5000/game_choice')
     assert r.status_code == 405
+
+
+def test_url_endpoint_creations():
+    ge = GameEngine("Keyboarder", "src/keyboarder.cfg")
+    endpoints = ge.list_endpoints()
+    assert 'game_choice' in str(endpoints)

@@ -18,6 +18,9 @@ class GameEngine(Flask):
         self.game_chosen = None
         self.load_gameengine_config()
 
+        self.add_endpoints()
+
+    def add_endpoints(self):
         self.add_url_rule('/list_games',
                           view_func=self.list_game_handler_rule,
                           methods=['GET'])
@@ -25,6 +28,9 @@ class GameEngine(Flask):
         self.add_url_rule('/game_choice',
                           view_func=self.game_choice_rule,
                           methods=['GET', 'POST'])
+
+    def list_endpoints(self):
+        return self.url_map
 
     def load_gameengine_config(self):
         """load_game - method for loading the game config file
@@ -73,13 +79,13 @@ class GameEngine(Flask):
 
         return None not in self.data.values()
 
+    # from GET /listgames
     def list_game_handler_rule(self):
-        # from GET /listgames
         files = glob(self.data['game_config_path'] + '/game_*.cfg')
         return str(files), 200
 
+    # from GET | POST /gamechoice
     def game_choice_rule(self):
-        # from GET | POST /gamechoice
         method = request.method
         if method == 'GET':
             return str(self.game_chosen), 200
