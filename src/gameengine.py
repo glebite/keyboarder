@@ -7,6 +7,7 @@ import configparser
 from configparser import DuplicateSectionError, DuplicateOptionError
 from ast import literal_eval
 from glob import glob
+from keyplayer import KeyPlayer
 
 
 class GameEngine(Flask):
@@ -28,6 +29,9 @@ class GameEngine(Flask):
         self.add_url_rule('/game_choice',
                           view_func=self.game_choice_rule,
                           methods=['GET', 'POST'])
+
+    def setup_keyboards(self):
+        self.player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
 
     def list_endpoints(self):
         return self.url_map
