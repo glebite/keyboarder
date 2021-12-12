@@ -66,3 +66,8 @@ def test_url_endpoint_creations():
     ge = GameEngine("Keyboarder", "src/keyboarder.cfg")
     endpoints = ge.list_endpoints()
     assert 'game_choice' in str(endpoints)
+
+
+def test_pick_random_key(gameengineflask):
+    r = requests.get('http://localhost:5000/pick_key')
+    assert r.status_code == 200

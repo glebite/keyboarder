@@ -18,7 +18,7 @@ class GameEngine(Flask):
         self.data = {'game_config_path': None}
         self.game_chosen = None
         self.load_gameengine_config()
-
+        self.setup_keyboards()
         self.add_endpoints()
 
     def add_endpoints(self):
@@ -30,8 +30,14 @@ class GameEngine(Flask):
                           view_func=self.game_choice_rule,
                           methods=['GET', 'POST'])
 
+        self.add_url_rule('/pick_key',
+                          view_func=self.pick_key_rule,
+                          methods=['GET'])
+
     def setup_keyboards(self):
-        self.player = KeyPlayer(self.data['host_kbd'], self.data['target_kbd'])
+        # self.player = KeyPlayer(self.data['host_kbd'],
+        #                         self.data['target_kbd'])
+        self.player = KeyPlayer('src/English.csv', 'src/Farsi_RTL.csv')
 
     def list_endpoints(self):
         return self.url_map
@@ -82,6 +88,10 @@ class GameEngine(Flask):
                     self.cfg_parser['GameEngine'][entry]
 
         return None not in self.data.values()
+
+    def pick_key_rule(self):
+        target_char, host_char = self.player.from_target_pick_host()
+        return {'target': target_char, 'host': host_char}, 200
 
     # from GET /listgames
     def list_game_handler_rule(self):
