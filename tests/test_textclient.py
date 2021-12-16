@@ -1,5 +1,4 @@
 from textclient import TextClient
-import pytest
 
 
 def test_textclient_creation():
@@ -8,7 +7,9 @@ def test_textclient_creation():
 
 
 def test_textclient_creation_bad_param():
-    with pytest.raises(ValueError):
-        tc = TextClient('')
+    try:
+        tc = TextClient('slocalhost')
+        print(tc)
+        assert False
+    except ValueError:
         assert True
-    assert False

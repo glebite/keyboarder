@@ -13,7 +13,7 @@ class TextClient:
         r = requests.get(self.server_ip + '/pick_key')
         print(r.status_code)
 
-       
+
 if __name__ == "__main__":
     tc = TextClient(sys.argv[1])
     tc.get_key_data()
