@@ -8,6 +8,7 @@ from configparser import DuplicateSectionError, DuplicateOptionError
 from ast import literal_eval
 from glob import glob
 from keyplayer import KeyPlayer
+import sys
 
 
 class GameEngine(Flask):
@@ -112,5 +113,9 @@ class GameEngine(Flask):
 
 
 if __name__ == "__main__":
-    x = GameEngine("game", "./src/keyboarder.cfg")
+    if len(sys.argv) == 2:
+        config_file = sys.argv[1]
+    else:
+        config_file = './src/keyboarder.cfg'
+    x = GameEngine("game", config_file)
     x.run()
