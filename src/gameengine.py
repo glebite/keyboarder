@@ -36,9 +36,9 @@ class GameEngine(Flask):
                           methods=['GET'])
 
     def setup_keyboards(self):
-        # self.player = KeyPlayer(self.data['host_kbd'],
-        #                         self.data['target_kbd'])
-        self.player = KeyPlayer('src/English.csv', 'src/Farsi_RTL.csv')
+        self.player = KeyPlayer(self.data['host_kbd'],
+                                self.data['target_kbd'])
+        # self.player = KeyPlayer('src/English.csv', 'src/Farsi_RTL.csv')
 
     def list_endpoints(self):
         return self.url_map
@@ -116,6 +116,6 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         config_file = sys.argv[1]
     else:
-        config_file = './src/keyboarder.cfg'
+        config_file = 'src/keyboarder.cfg'
     x = GameEngine("game", config_file)
     x.run()

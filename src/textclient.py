@@ -13,8 +13,11 @@ class TextClient:
         self.player = None
 
     def get_key_data(self):
-        import pdb; pdb.set_trace()
         r = requests.get(self.server_ip + '/pick_key')
+        print(r.status_code)
+
+    def get_games_from_server(self):
+        r = requests.get(self.server_ip + '/listgames')
         print(r.status_code)
 
 
