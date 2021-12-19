@@ -21,6 +21,7 @@ class GameEngine(Flask):
         self.load_gameengine_config()
         self.setup_keyboards()
         self.add_endpoints()
+        self.scores = {'success': 0, 'fail': 0}
 
     def add_endpoints(self):
         self.add_url_rule('/list_games',
@@ -34,6 +35,10 @@ class GameEngine(Flask):
         self.add_url_rule('/pick_key',
                           view_func=self.pick_key_rule,
                           methods=['GET'])
+        
+       self.add_url_rule('/get_score',
+                          view_func=self.get_score_rule,
+                          methods=['GET'])        
 
     def setup_keyboards(self):
         self.player = KeyPlayer(self.data['host_kbd'],
@@ -110,6 +115,9 @@ class GameEngine(Flask):
             return 'OK', 200
         else:
             return 'Not Supported', 405
+
+    def get_score_rule(self):
+        return str(self.scores), 200
 
 
 if __name__ == "__main__":
