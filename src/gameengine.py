@@ -35,8 +35,8 @@ class GameEngine(Flask):
         self.add_url_rule('/pick_key',
                           view_func=self.pick_key_rule,
                           methods=['GET'])
-        
-       self.add_url_rule('/get_score',
+
+        self.add_url_rule('/get_score',
                           view_func=self.get_score_rule,
                           methods=['GET'])        
 
