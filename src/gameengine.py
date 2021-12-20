@@ -116,6 +116,12 @@ class GameEngine(Flask):
         else:
             return 'Not Supported', 405
 
+    def increment_result(self, result):
+        self.scores[result] += 1
+
+    def clear_results(self):
+        self.scores = {'success': 0, 'fail': 0}
+
     def get_score_rule(self):
         return str(self.scores), 200
 
