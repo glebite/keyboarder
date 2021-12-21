@@ -41,9 +41,9 @@ class GameEngine(Flask):
                           methods=['GET'])        
 
     def setup_keyboards(self):
-        self.player = KeyPlayer(self.data['host_kbd'],
-                                self.data['target_kbd'])
-        # self.player = KeyPlayer('src/English.csv', 'src/Farsi_RTL.csv')
+        # self.player = KeyPlayer(self.data['host_kbd'],
+        #                         self.data['target_kbd'])
+        self.player = KeyPlayer('src/English.csv', 'src/Farsi_RTL.csv')
 
     def list_endpoints(self):
         return self.url_map

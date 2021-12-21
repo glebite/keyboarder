@@ -76,4 +76,12 @@ def test_pick_random_key(gameengineflask):
 def test_default_scores():
     ge = GameEngine("Keyboarder", "src/keyboarder.cfg")
     scores = ge.scores
-    assert scores['succes'] == 0 and scores['fail'] == 0
+    assert scores['success'] == 0 and scores['fail'] == 0
+
+
+def test_increment_success():
+    ge = GameEngine("Keyboarder", "src/keyboarder.cfg")
+    scores = ge.scores
+    assert scores['success'] == 0 and scores['fail'] == 0
+    ge.increment_result('success')
+    assert scores['success'] == 1 and scores['fail'] == 0
