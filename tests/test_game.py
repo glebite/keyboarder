@@ -5,8 +5,8 @@ import configparser
 import time
 import curses
 import pytest
-import sys
-from io import StringIO
+# import sys
+# from io import StringIO
 
 
 @pytest.fixture(autouse=True)
@@ -55,7 +55,7 @@ def test_game_invalid_config_file():
 def test_load_game():
     game = Game('data/game_1.cfg')
     game.load_game()
-    assert game.data['target_kbd'] == 'Farsi_RTL.csv', f"target_kbd" \
+    assert game.data['target_kbd'] == 'src/Farsi_RTL.csv', f"target_kbd" \
         f" is {game.data['target_kbd']} instead of Farsi_RTL.csv"
 
 
@@ -178,8 +178,8 @@ def test_bring_up_screen():
 def test_bring_up_current_word():
     game = Game('data/game_5.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
     game.setup_display()
     screen = game.player.host_layout.screen_dump()
     expected = "Current word:"
@@ -194,8 +194,8 @@ def test_bring_up_current_word():
 def test_hinting_on():
     game = Game('data/game_1.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
     game.setup_display()
     game.hint_on('1')
     screen = game.player.host_layout.screen_dump()
@@ -209,8 +209,8 @@ def test_hinting_on():
 def test_key_hint_off():
     game = Game('data/game_1.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
     game.setup_display()
     game.hint_on('1')
     game.hint_off('1')
@@ -224,8 +224,8 @@ def test_key_hint_off():
 def test_update_score_display():
     game = Game('data/game_5.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
     game.setup_display()
 
     game.fail = 5
@@ -245,8 +245,8 @@ def test_update_score_display():
 def test_print_results_no_fails(capsys):
     game = Game('data/game_1.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
     game.success = 20
     game.fail = 0
 
@@ -260,8 +260,8 @@ def test_print_results_no_fails(capsys):
 def test_print_results__fails(capsys):
     game = Game('data/game_1.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
     game.success = 19
     game.fail = 1
     game.failed_characters.append('a')
@@ -277,8 +277,8 @@ def test_print_results__fails(capsys):
 def test_print_results_timed(capsys):
     game = Game('data/game_1.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
     game.success = 19
     game.fail = 1
     game.data['timed'] = True
@@ -294,8 +294,8 @@ def test_print_results_timed(capsys):
 def test_user_input_one_character():
     game = Game('data/game_1.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
 
     game.data['characters'] = True
     game.data['words'] = False
@@ -310,8 +310,8 @@ def test_user_input_one_character():
 def test_user_input_string():
     game = Game('data/game_1.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
 
     game.data['characters'] = False
     game.data['words'] = True
@@ -326,8 +326,8 @@ def test_user_input_string():
 def test_no_words_no_characters():
     game = Game('data/game_1.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
 
     game.data['characters'] = False
     game.data['words'] = False
@@ -338,8 +338,8 @@ def test_no_words_no_characters():
 def test_user_non_injected_input_one_character():
     game = Game('data/game_1.cfg')
     game.load_game()
-    game.player = KeyPlayer('src/'+game.data['host_kbd'],
-                            'src/'+game.data['target_kbd'])
+    game.player = KeyPlayer(game.data['host_kbd'],
+                            game.data['target_kbd'])
 
     game.data['characters'] = True
     game.data['words'] = False
@@ -350,4 +350,3 @@ def test_user_non_injected_input_one_character():
     value = game.accept_input()
     game.player.host_layout.screen_deinit()
     assert value == 'z'
-
