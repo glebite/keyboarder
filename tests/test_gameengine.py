@@ -85,3 +85,13 @@ def test_increment_success():
     assert scores['success'] == 0 and scores['fail'] == 0
     ge.increment_result('success')
     assert scores['success'] == 1 and scores['fail'] == 0
+
+
+def test_clear_scores():
+    ge = GameEngine("Keyboarder", "src/keyboarder.cfg")
+    ge.increment_result('success')
+    scores = ge.scores
+    assert scores['success'] == 1 and scores['fail'] == 0
+    ge.clear_results()
+    scores = ge.scores
+    assert scores['success'] == 0 and scores['fail'] == 0
