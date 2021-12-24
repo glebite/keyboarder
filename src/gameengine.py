@@ -13,6 +13,8 @@ import sys
 
 class GameEngine(Flask):
     def __init__(self, application_name, config_file):
+        """__init__
+        """
         super(GameEngine, self).__init__(application_name)
         self.config_file = config_file
         self.pingtime = 0
@@ -24,6 +26,8 @@ class GameEngine(Flask):
         self.scores = {'success': 0, 'fail': 0}
 
     def add_endpoints(self):
+        """add_endpoints - register endpoints here
+        """
         self.add_url_rule('/list_games',
                           view_func=self.list_game_handler_rule,
                           methods=['GET'])
@@ -46,6 +50,7 @@ class GameEngine(Flask):
         self.player = KeyPlayer('src/English.csv', 'src/Farsi_RTL.csv')
 
     def list_endpoints(self):
+        """list_endpoints"""
         return self.url_map
 
     def load_gameengine_config(self):
@@ -96,6 +101,7 @@ class GameEngine(Flask):
         return None not in self.data.values()
 
     def pick_key_rule(self):
+        """ pick_key_rule """
         target_char, host_char = self.player.from_target_pick_host()
         return {'target': target_char, 'host': host_char}, 200
 
