@@ -29,7 +29,9 @@ class TextClient:
     def send_game_selection_to_server(self, game):
         """send_game_selection_to_server
         """
-        pass
+        game_data = {'game_choice', game}
+        r = requests.post(self.server_ip + '/game_choice', data=game_data)
+        print(r.status_code)
 
 
 if __name__ == "__main__":
