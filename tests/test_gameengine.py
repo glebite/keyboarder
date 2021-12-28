@@ -4,15 +4,44 @@ import requests
 import time
 import configparser
 from gameengine import GameEngine
+import socket
+
+
+def wait_until_up(watchdog):
+    while True:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect('127.0.0.1:5000')
+            s.close()
+            break
+        except Exception as e:
+            watchdog -= 1
+        if watchdog == 0:
+            break
+        time.sleep(1)
+
+
+def wait_until_down(watchdog):
+    while True:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect('127.0.0.1:5000')
+            s.close()
+            watchdog -= 1
+        except Exception as e:
+            break
+        if watchdog == 0:
+            break
+        time.sleep(1)
 
 
 @pytest.fixture()
 def gameengineflask():
     proc = subprocess.Popen('src/gameengine.py')
-    time.sleep(1)
+    wait_until_up(5)
     yield "resource"
     proc.kill()
-    time.sleep(1)
+    wait_until_down(5)
 
 
 def test_gameengine_creation():

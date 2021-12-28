@@ -24,8 +24,7 @@ class TextClient:
         """get_games_from_server(self):
         """
         r = requests.get(self.server_ip + '/list_games')
-        print(r.text)
-        print(r.status_code)
+        return r.status_code
 
     def send_game_selection_to_server(self, game):
         """send_game_selection_to_server
@@ -41,7 +40,7 @@ class TextClient:
         """
         r = requests.post(self.server_ip + '/game_choice',
                           json={"game_choice": 3})
-        print(r.status_code)
+        return r.status_code
 
 
 if __name__ == "__main__":
