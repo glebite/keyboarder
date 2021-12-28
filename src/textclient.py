@@ -23,17 +23,27 @@ class TextClient:
     def get_games_from_server(self):
         """get_games_from_server(self):
         """
-        r = requests.get(self.server_ip + '/listgames')
+        r = requests.get(self.server_ip + '/list_games')
+        print(r.text)
         print(r.status_code)
 
     def send_game_selection_to_server(self, game):
         """send_game_selection_to_server
+
+        params:
+        game - string - the game to be selected
+
+        returns:
+        n/a
+
+        raises:
+        n/a
         """
-        game_data = {'game_choice', game}
-        r = requests.post(self.server_ip + '/game_choice', data=game_data)
+        r = requests.post(self.server_ip + '/game_choice',
+                          json={"game_choice": 3})
         print(r.status_code)
 
 
 if __name__ == "__main__":
     tc = TextClient(sys.argv[1])
-    tc.get_key_data()
+    tc.send_game_selection_to_server('data/game_1.cfg')
