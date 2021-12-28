@@ -11,10 +11,10 @@ def wait_until_up(watchdog):
     while True:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect('127.0.0.1:5000')
+            s.connect(('127.0.0.1', 5000))
             s.close()
             break
-        except Exception as e:
+        except ConnectionRefusedError:
             watchdog -= 1
         if watchdog == 0:
             break
@@ -25,10 +25,10 @@ def wait_until_down(watchdog):
     while True:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect('127.0.0.1:5000')
+            s.connect(('127.0.0.1', 5000))
             s.close()
             watchdog -= 1
-        except Exception as e:
+        except ConnectionRefusedError:
             break
         if watchdog == 0:
             break

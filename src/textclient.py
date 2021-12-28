@@ -18,7 +18,7 @@ class TextClient:
         """get_key_data - retrieve a key from the server
         """
         r = requests.get(self.server_ip + '/pick_key')
-        print(r.status_code)
+        return r.status_code
 
     def get_games_from_server(self):
         """get_games_from_server(self):
