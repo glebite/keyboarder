@@ -108,7 +108,7 @@ class GameEngine(Flask):
     # from GET /listgames
     def list_game_handler_rule(self):
         files = glob(self.data['game_config_path'] + '/game_*.cfg')
-        return str(files), 200
+        return {'status_code': 200, 'game_list': list(files)}
 
     # from GET | POST /gamechoice
     def game_choice_rule(self):

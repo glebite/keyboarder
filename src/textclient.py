@@ -1,5 +1,6 @@
 import requests
 import sys
+import json
 
 
 class TextClient:
@@ -24,7 +25,7 @@ class TextClient:
         """get_games_from_server(self):
         """
         r = requests.get(self.server_ip + '/list_games')
-        return r.status_code
+        return json.loads(r.text)
 
     def send_game_selection_to_server(self, game):
         """send_game_selection_to_server
@@ -39,10 +40,26 @@ class TextClient:
         n/a
         """
         r = requests.post(self.server_ip + '/game_choice',
-                          json={"game_choice": 3})
+                          json={"game_choice": game})
         return r.status_code
 
+    def temp_user_game_selection(self):
+        available_games = self.get_games_from_server()
+        print(available_games)
+        for i, game in enumerate(available_games['game_list']):
+            print(i, game)
 
-if __name__ == "__main__":
+    def temp_user_pick_game(self):
+        print('Enter your choice: ')
+        choice = input()
+        rc = self.send_game_selection_to_server(choice)
+        if rc.status_code == 200:
+            print("Okidoki")
+        else:
+            print("Nokidoki")
+
+
+if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
-    tc.send_game_selection_to_server('data/game_1.cfg')
+    tc.temp_user_game_selection()
+    tc.temp_user_pick_game()

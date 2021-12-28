@@ -47,6 +47,11 @@ def test_textclient_creation():
     assert tc, "TextClient not created as expected"
 
 
+def test_textclient_creation_with_http():
+    tc = TextClient('http://localhost:5000')
+    assert tc, "TextClient not created as expected"
+
+
 def test_textclient_creation_bad_param():
     try:
         tc = TextClient('slocalhost')
@@ -59,10 +64,16 @@ def test_textclient_creation_bad_param():
 def test_tc_get_games(gameengineflask):
     tc = TextClient('localhost:5000')
     rc = tc.get_games_from_server()
-    assert rc == 200
+    assert rc['status_code'] == 200
 
 
 def test_tc_pick_random_key(gameengineflask):
     tc = TextClient('localhost:5000')
     rc = tc.get_key_data()
+    assert rc == 200
+
+
+def test_tc_send_valid_game_selection(gameengineflask):
+    tc = TextClient('localhost:5000')
+    rc = tc.send_game_selection_to_server('data/game_1.cfg')
     assert rc == 200
