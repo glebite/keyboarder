@@ -21,7 +21,6 @@ class GameEngine(Flask):
         self.data = {'game_config_path': None}
         self.game_chosen = None
         self.load_gameengine_config()
-        # self.setup_keyboards()
         self.add_endpoints()
         self.scores = {'success': 0, 'fail': 0}
         self.game_data = {'name': None,
@@ -59,8 +58,8 @@ class GameEngine(Flask):
                           methods=['GET'])
 
     def setup_keyboards(self):
-        self.player = KeyPlayer(self.data['host_kbd'],
-                                self.data['target_kbd'])
+        self.player = KeyPlayer(self.game_data['host_kbd'],
+                                self.game_data['target_kbd'])
 
     def list_endpoints(self):
         """list_endpoints"""
@@ -131,7 +130,9 @@ class GameEngine(Flask):
         elif method == 'POST':
             data = json.loads(request.get_data())
             self.game_chosen = data['game_choice']
+            # import pdb; pdb.set_trace()
             self.get_game_configuration()
+            self.setup_keyboards()
             return 'OK', 200
         else:
             return 'Not Supported', 405

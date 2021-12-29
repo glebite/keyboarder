@@ -62,11 +62,11 @@ def test_default_game_choice(gameengineflask):
 
 def test_set_game_choice(gameengineflask):
     r = requests.post('http://localhost:5000/game_choice',
-                      data='{"game_choice": 3}')
+                      data='{"game_choice": "data/game_1.cfg"}')
     assert r.status_code == 200
     r = requests.get('http://localhost:5000/game_choice')
     assert r.status_code == 200
-    assert r.text == '3'
+    assert r.text == 'data/game_1.cfg'
 
 
 def test_gameengine_config_does_not_exist():
@@ -98,6 +98,7 @@ def test_url_endpoint_creations():
 
 
 def test_pick_random_key(gameengineflask):
+    requests.post('http://localhost:5000/game_choice', data='{"game_choice": "data/game_1.cfg"}')
     r = requests.get('http://localhost:5000/pick_key')
     assert r.status_code == 200
 
