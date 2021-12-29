@@ -7,6 +7,20 @@ class TextClient:
     """TextClient
     """
     def __init__(self, server_ip):
+        """__init__ - init of the class
+
+        Should converts the incoming server_ip from
+        address:port to http://address:port if need be.
+
+        params:
+        server_ip - the location of the gameengine server
+
+        returns:
+        n/a
+
+        raises:
+        n/a
+        """
         if ':' not in server_ip:
             raise ValueError
         if 'http://' not in server_ip:
@@ -44,16 +58,22 @@ class TextClient:
         return r.status_code
 
     def temp_user_game_selection(self):
+        """temp_user_game_selection - temporary until display mechanism is
+        put together.
+        """
         available_games = self.get_games_from_server()
         print(available_games)
         for i, game in enumerate(available_games['game_list']):
             print(i, game)
 
     def temp_user_pick_game(self):
+        """temp_user_pick_game - temporary until display mechanism is
+        put together.
+        """
         print('Enter your choice: ')
         choice = input()
         rc = self.send_game_selection_to_server(choice)
-        if rc.status_code == 200:
+        if rc == 200:
             print("Okidoki")
         else:
             print("Nokidoki")
