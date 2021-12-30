@@ -69,8 +69,8 @@ def test_tc_get_games(gameengineflask):
 
 
 def test_tc_pick_random_key(gameengineflask):
-    r = requests.post('http://localhost:5000/game_choice',
-                      data='{"game_choice": "data/game_1.cfg"}')    
+    requests.post('http://localhost:5000/game_choice',
+                      data='{"game_choice": "data/game_1.cfg"}')
     tc = TextClient('localhost:5000')
     rc = tc.get_key_data()
     assert rc == 200

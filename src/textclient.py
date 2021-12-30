@@ -78,8 +78,17 @@ class TextClient:
         else:
             print("Nokidoki")
 
+    def send_key(self, value):
+        r = requests.post(self.server_ip + '/receive_key',
+                          json={"host_key": value})
+        return r.status_code
+
 
 if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
     tc.temp_user_game_selection()
     tc.temp_user_pick_game()
+    target_char = tc.get_key_data()
+    print(f'match the key for {target_char}')
+    host_key = input()
+    print(tc.send_key(host_key))
