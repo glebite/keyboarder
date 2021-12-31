@@ -33,12 +33,14 @@ class TextClient:
         """get_key_data - retrieve a key from the server
         """
         r = requests.get(self.server_ip + '/pick_key')
-        return r.status_code
+        return r
 
     def get_games_from_server(self):
         """get_games_from_server(self):
         """
+        print('Going to send a get to get a list of games')
         r = requests.get(self.server_ip + '/list_games')
+        print(r.text)
         return json.loads(r.text)
 
     def send_game_selection_to_server(self, game):
@@ -55,7 +57,7 @@ class TextClient:
         """
         r = requests.post(self.server_ip + '/game_choice',
                           json={"game_choice": game})
-        return r.status_code
+        return r
 
     def temp_user_game_selection(self):
         """temp_user_game_selection - temporary until display mechanism is
@@ -88,7 +90,8 @@ if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
     tc.temp_user_game_selection()
     tc.temp_user_pick_game()
-    target_char = tc.get_key_data()
+    r = tc.get_key_data()
+    target_char = json.loads(r.text)['target']
     print(f'match the key for {target_char}')
     host_key = input()
     print(tc.send_key(host_key))

@@ -123,7 +123,9 @@ class GameEngine(Flask):
 
     # from GET /listgames
     def list_game_handler_rule(self):
+        print(f"Getting a list of games from {self.data['game_config_path']}")
         files = glob(self.data['game_config_path'] + '/game_*.cfg')
+        print(files)
         return {'status_code': 200, 'game_list': list(files)}
 
     # from GET | POST /gamechoice
@@ -132,9 +134,9 @@ class GameEngine(Flask):
         if method == 'GET':
             return str(self.game_chosen), 200
         elif method == 'POST':
+            print(f'Posting: {request.get_data()}')
             data = json.loads(request.get_data())
             self.game_chosen = data['game_choice']
-            # import pdb; pdb.set_trace()
             self.get_game_configuration()
             self.setup_keyboards()
             return 'OK', 200

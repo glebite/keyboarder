@@ -70,13 +70,13 @@ def test_tc_get_games(gameengineflask):
 
 def test_tc_pick_random_key(gameengineflask):
     requests.post('http://localhost:5000/game_choice',
-                      data='{"game_choice": "data/game_1.cfg"}')
+                  data='{"game_choice": "data/game_1.cfg"}')
     tc = TextClient('localhost:5000')
     rc = tc.get_key_data()
-    assert rc == 200
+    assert rc.status_code == 200
 
 
 def test_tc_send_valid_game_selection(gameengineflask):
     tc = TextClient('localhost:5000')
     rc = tc.send_game_selection_to_server('data/game_1.cfg')
-    assert rc == 200
+    assert rc.status_code == 200, f'expected 200, got {rc.status_code}'
