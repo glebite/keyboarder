@@ -80,3 +80,10 @@ def test_tc_send_valid_game_selection(gameengineflask):
     tc = TextClient('localhost:5000')
     rc = tc.send_game_selection_to_server('data/game_1.cfg')
     assert rc.status_code == 200, f'expected 200, got {rc.status_code}'
+
+
+def test_tc_send_key(gameengineflask):
+    tc = TextClient('localhost:5000')
+    rc = tc.send_game_selection_to_server('data/game_1.cfg')
+    rc = tc.send_key('h')
+    assert rc == 200
