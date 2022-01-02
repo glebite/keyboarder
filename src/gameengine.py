@@ -34,6 +34,10 @@ class GameEngine(Flask):
                           'host_kbd': None,
                           'target_kbd': None}
 
+        self.game_status = {
+            'scores': self.scores
+            }
+
     def add_endpoints(self):
         """add_endpoints - register endpoints here
         """
@@ -59,7 +63,11 @@ class GameEngine(Flask):
 
         self.add_url_rule('/receive_key',
                           view_func=self.receive_key_rule,
-                          methods=['POST'])        
+                          methods=['POST'])
+
+        self.add_url_rule('/get_game_status',
+                          view_func=self.get_game_status_rule,
+                          methods=['GET'])
 
     def setup_keyboards(self):
         self.player = KeyPlayer(self.game_data['host_kbd'],
@@ -115,6 +123,11 @@ class GameEngine(Flask):
                     self.cfg_parser['GameEngine'][entry]
 
         return None not in self.data.values()
+
+    def get_game_status_rule(self):
+        """get_game_status_rule
+        """
+        return {'game_status': self.game_status}, 200
 
     def pick_key_rule(self):
         """ pick_key_rule """
@@ -216,6 +229,7 @@ class GameEngine(Flask):
 
     def receive_key_rule(self):
         data = json.loads(request.get_data())
+        print(f'Data received: {data}')
         return {'received key': data}, 200
 
 
