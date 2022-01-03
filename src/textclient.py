@@ -80,6 +80,11 @@ class TextClient:
         else:
             print("Nokidoki")
 
+    def temp_get_game_information(self):
+        r = requests.get(self.server_ip + '/get_info')
+        print(f'Game information: {r.text}')
+        return r.status_code
+
     def send_key(self, value):
         r = requests.post(self.server_ip + '/receive_key',
                           json={"host_key": value})
@@ -91,7 +96,8 @@ if __name__ == "__main__":  # pragma: nocover
     tc.temp_user_game_selection()
     tc.temp_user_pick_game()
     r = tc.get_key_data()
-    target_char = json.loads(r.text)['target']
-    print(f'match the key for {target_char}')
-    host_key = input()
-    print(tc.send_key(host_key))
+    tc.temp_get_game_information()
+    # target_char = json.loads(r.text)['target']
+    # print(f'match the key for {target_char}')
+    # host_key = input()
+    # print(tc.send_key(host_key))
