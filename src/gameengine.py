@@ -35,7 +35,8 @@ class GameEngine(Flask):
                           'target_kbd': None}
 
         self.game_status = {
-            'scores': self.scores
+            'scores': self.scores,
+            'current_stage': 0
             }
 
     def add_endpoints(self):
