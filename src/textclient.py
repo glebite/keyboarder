@@ -88,7 +88,7 @@ class TextClient:
     def send_key(self, value):
         r = requests.post(self.server_ip + '/receive_key',
                           json={"host_key": value})
-        return r.status_code
+        return r.text
 
 
 if __name__ == "__main__":  # pragma: nocover
@@ -97,7 +97,7 @@ if __name__ == "__main__":  # pragma: nocover
     tc.temp_user_pick_game()
     r = tc.get_key_data()
     tc.temp_get_game_information()
-    # target_char = json.loads(r.text)['target']
-    # print(f'match the key for {target_char}')
-    # host_key = input()
-    # print(tc.send_key(host_key))
+    target_char = json.loads(r.text)['target']
+    print(f'match the key for {target_char}')
+    host_key = input()
+    print(tc.send_key(host_key))

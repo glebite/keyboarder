@@ -133,6 +133,8 @@ class GameEngine(Flask):
     def pick_key_rule(self):
         """ pick_key_rule """
         target_char, host_char = self.player.from_target_pick_host()
+        self.game_status['current_targ'] = target_char
+        self.game_status['current_host'] = host_char
         return {'target': target_char, 'host': host_char}, 200
 
     # from GET /listgames
@@ -231,7 +233,10 @@ class GameEngine(Flask):
     def receive_key_rule(self):
         data = json.loads(request.get_data())
         print(f'Data received: {data}')
-        return {'received key': data}, 200
+        if data['host_key'] == self.game_status['current_host']:
+            return {'success': True}, 200
+        else:
+            return {'success': False}, 200
 
 
 if __name__ == "__main__":
