@@ -81,7 +81,7 @@ class TextClient:
             print("Nokidoki")
 
     def temp_get_game_information(self):
-        r = requests.get(self.server_ip + '/get_info')
+        r = requests.get(self.server_ip + '/get_game_status')
         print(f'Game information: {r.text}')
         return r.status_code
 
@@ -101,3 +101,4 @@ if __name__ == "__main__":  # pragma: nocover
     print(f'match the key for {target_char}')
     host_key = input()
     print(tc.send_key(host_key))
+    print(tc.temp_get_game_information())

@@ -36,7 +36,8 @@ class GameEngine(Flask):
 
         self.game_status = {
             'scores': self.scores,
-            'current_stage': 0
+            'current_stage': 0,
+            'remaining': 0
             }
 
     def add_endpoints(self):
@@ -211,6 +212,7 @@ class GameEngine(Flask):
     def get_game_configuration(self):
         self.game_file = self.game_chosen
         self.load_game()
+        self.game_status['remaining'] = self.game_data['number']
 
     def increment_result(self, result):
         self.scores[result] += 1
@@ -233,9 +235,12 @@ class GameEngine(Flask):
     def receive_key_rule(self):
         data = json.loads(request.get_data())
         print(f'Data received: {data}')
+        self.game_status['remaining'] -= 1
         if data['host_key'] == self.game_status['current_host']:
+            self.game_status['scores']['success'] += 1
             return {'success': True}, 200
         else:
+            self.game_status['scores']['fail'] += 1
             return {'success': False}, 200
 
 
