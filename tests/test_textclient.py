@@ -86,4 +86,4 @@ def test_tc_send_key(gameengineflask):
     tc = TextClient('localhost:5000')
     rc = tc.send_game_selection_to_server('data/game_1.cfg')
     rc = tc.send_key('h')
-    assert rc == 200
+    assert rc == '{"success":false}\n'
