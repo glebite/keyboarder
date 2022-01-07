@@ -126,6 +126,14 @@ class GameEngine(Flask):
 
         return None not in self.data.values()
 
+    def reset_game_status(self):
+        """reset_game_status - reset the fail/success counts, remaining, etc...
+        """
+        self.scores = {'fail': 0, 'success': 0}
+        self.game_status['scores'] = self.scores
+        self.game_status['current_stage'] = 0
+        self.game_status['remaining'] = 0
+
     def get_game_status_rule(self):
         """get_game_status_rule
         """
@@ -154,6 +162,7 @@ class GameEngine(Flask):
             print(f'Posting: {request.get_data()}')
             data = json.loads(request.get_data())
             self.game_chosen = data['game_choice']
+            self.reset_game_status()
             self.get_game_configuration()
             self.setup_keyboards()
             return 'OK', 200
