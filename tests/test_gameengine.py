@@ -125,3 +125,30 @@ def test_clear_scores():
     ge.clear_results()
     scores = ge.scores
     assert scores['success'] == 0 and scores['fail'] == 0
+
+
+def test_basic_reset_status():
+    ge = GameEngine("Keyboarder", "src/keyboarder.cfg")
+    ge.game_status['current_stage'] = 3
+    assert ge.game_status['current_stage'] == 3
+    ge.reset_game_status()
+    assert ge.game_status['current_stage'] == 0
+
+
+def test_all_values_reset_status():
+    ge = GameEngine("Keyboarder", "src/keyboarder.cfg")
+    ge.scores = {'fail': 1, 'success': 2}
+    ge.game_status['scores'] = ge.scores
+    ge.game_status['current_stage'] = 3
+    ge.game_status['remaining'] = 4
+
+    assert ge.game_status['scores']['fail'] == 1
+    assert ge.game_status['scores']['success'] == 2
+    assert ge.game_status['current_stage'] == 3
+    assert ge.game_status['remaining'] == 4
+
+    ge.reset_game_status()
+    assert ge.game_status['scores']['fail'] == 0
+    assert ge.game_status['scores']['success'] == 0
+    assert ge.game_status['current_stage'] == 0
+    assert ge.game_status['remaining'] == 0
