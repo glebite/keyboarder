@@ -74,4 +74,8 @@ This application was created by glebite.  I am @glebite on [github](http://www.g
 7) Simple words without hints  
 8) Simple words without hints and timed  
 
+## New execution stuff coming:  
 
+New setup is required for the client/server model.
+
+Basic Text Setup.
