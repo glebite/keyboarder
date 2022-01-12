@@ -1,6 +1,8 @@
 import requests
 import sys
 import json
+from layout2 import Layout
+import time
 
 
 class TextClient:
@@ -85,6 +87,10 @@ class TextClient:
         print(f'Game information: {r.text}')
         return json.loads(r.text)
 
+    def temp_get_game_data(self):
+        r = requests.get(self.server_ip + '/get_game_data')
+        return json.loads(r.text)
+
     def send_key(self, value):
         r = requests.post(self.server_ip + '/receive_key',
                           json={"host_key": value})
@@ -99,6 +105,14 @@ if __name__ == "__main__":  # pragma: nocover
     game_information = tc.temp_get_game_information()
     print(type(game_information))
     game_counter = game_information['game_status']['remaining']
+
+    stuff = tc.temp_get_game_data()
+    layout = Layout(stuff['host_kbd'])
+    layout.screen_init()
+    layout.show_keyboard()
+    layout.screen.refresh()
+    time.sleep(10)
+    layout.screen_deinit()
 
     while game_counter > 0:
         r = tc.get_key_data()

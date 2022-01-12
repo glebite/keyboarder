@@ -71,6 +71,10 @@ class GameEngine(Flask):
                           view_func=self.get_game_status_rule,
                           methods=['GET'])
 
+        self.add_url_rule('/get_game_data',
+                          view_func=self.get_game_data_rule,
+                          methods=['GET'])
+
     def setup_keyboards(self):
         self.player = KeyPlayer(self.game_data['host_kbd'],
                                 self.game_data['target_kbd'])
@@ -240,6 +244,9 @@ class GameEngine(Flask):
                  'game_data': self.game_data,
                  'game_chosen': self.game_chosen,
                  'scores': self.scores}}
+
+    def get_game_data_rule(self):
+        return self.game_data
 
     def receive_key_rule(self):
         data = json.loads(request.get_data())
