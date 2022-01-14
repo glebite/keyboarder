@@ -15,6 +15,9 @@ class Menu(object):
         self.window = stdscreen.subwin(0, 0)
         self.window.keypad(1)
         self.panel = panel.new_panel(self.window)
+        self.desc_panel = panel.new_panel(self.window)
+        self.desc_panel.move(5, 40)
+        self.desc_panel.hide()
         self.panel.hide()
         self.selection = None
         panel.update_panels()
@@ -84,6 +87,8 @@ class MyApp(object):
         ]
         self.main_menu = Menu(main_menu_items, self.screen)
         self.main_menu.display()
+        curses.curs_set(1)
+        curses.endwin()
 
 
 if __name__ == "__main__":
