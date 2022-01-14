@@ -4,6 +4,7 @@ https://stackoverflow.com/questions/14200721/how-to-create-a-menu-and-submenus-i
 """
 import curses
 from curses import panel
+import time
 
 
 class Menu(object):
@@ -15,16 +16,19 @@ class Menu(object):
         self.window = stdscreen.subwin(0, 0)
         self.window.keypad(1)
         self.panel = panel.new_panel(self.window)
-        self.desc_panel = panel.new_panel(self.window)
-        self.desc_panel.move(5, 40)
-        self.desc_panel.hide()
         self.panel.hide()
+
+        self.window2 = curses.newwin(5, 20, 5, 10)
+        self.window2.addstr(0, 0, 'something')
+        curses.doupdate()
         self.selection = None
         panel.update_panels()
 
+        self.window2.refresh()
         self.position = 0
         self.items = items
         self.items.append(("exit", "exit"))
+        time.sleep(10)
 
     def navigate(self, n):
         """
@@ -86,7 +90,7 @@ class MyApp(object):
             ("game_2.py", curses.flash),
         ]
         self.main_menu = Menu(main_menu_items, self.screen)
-        self.main_menu.display()
+        # self.main_menu.display()
         curses.curs_set(1)
         curses.endwin()
 
