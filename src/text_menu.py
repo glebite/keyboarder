@@ -18,7 +18,7 @@ class Menu(object):
         self.panel = panel.new_panel(self.window)
         self.panel.hide()
 
-        self.window2 = curses.newwin(5, 20, 5, 10)
+        self.window2 = curses.newwin(5, 10, 5, 40)
         self.window2.addstr(0, 0, 'something')
         curses.doupdate()
         self.selection = None
