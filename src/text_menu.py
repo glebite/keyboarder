@@ -7,6 +7,31 @@ from curses import panel
 import time
 
 
+class TextBox(object):
+    """
+    """
+    def __init__(self, properties, stdscreen):
+        """
+        """
+        r, c, h, w = properties
+        self.window = stdscreen.subwin(r, c)
+
+    def clear(self):
+        """
+        """
+        pass
+
+    def show_text(self, text):
+        """
+        """
+        pass
+
+    def display(self):
+        """
+        """
+        pass
+
+
 class Menu(object):
     """
     """
@@ -17,14 +42,10 @@ class Menu(object):
         self.window.keypad(1)
         self.panel = panel.new_panel(self.window)
         self.panel.hide()
-
-        self.window2 = curses.newwin(5, 10, 5, 40)
-        self.window2.addstr(0, 0, 'something')
         curses.doupdate()
         self.selection = None
         panel.update_panels()
 
-        self.window2.refresh()
         self.position = 0
         self.items = items
         self.items.append(("exit", "exit"))
