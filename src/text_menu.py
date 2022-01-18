@@ -7,31 +7,6 @@ from curses import panel
 import time
 
 
-class TextBox(object):
-    """
-    """
-    def __init__(self, properties, stdscreen):
-        """
-        """
-        r, c, h, w = properties
-        self.window = stdscreen.subwin(r, c)
-
-    def clear(self):
-        """
-        """
-        pass
-
-    def show_text(self, text):
-        """
-        """
-        pass
-
-    def display(self):
-        """
-        """
-        pass
-
-
 class Menu(object):
     """
     """

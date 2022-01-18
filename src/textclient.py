@@ -3,6 +3,7 @@ import sys
 import json
 from layout2 import Layout
 import time
+import text_menu
 
 
 class TextClient:
