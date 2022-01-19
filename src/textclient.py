@@ -4,6 +4,7 @@ import json
 from layout2 import Layout
 import time
 import text_menu
+import curses
 
 
 class TextClient:
@@ -67,9 +68,14 @@ class TextClient:
         put together.
         """
         available_games = self.get_games_from_server()
-        print(available_games)
+        screen = curses.initscr()
+        curses.curs_set(0)
+        main_menu_items = list()
         for i, game in enumerate(available_games['game_list']):
-            print(i, game)
+            main_menu_items.append((game, i))
+        main_menu = text_menu.Menu(main_menu_items, screen)
+        curses.curs_set(1)
+        curses.endwin()
 
     def temp_user_pick_game(self):
         """temp_user_pick_game - temporary until display mechanism is
