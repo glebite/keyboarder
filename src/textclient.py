@@ -67,16 +67,24 @@ class TextClient:
         """temp_user_game_selection - temporary until display mechanism is
         put together.
         """
+        print(f'>>> {time.time()}')
         available_games = self.get_games_from_server()
+        print(f'>>> {time.time()}')
         screen = curses.initscr()
+        x = time.time()        
         curses.curs_set(0)
         main_menu_items = list()
+
+
         for i, game in enumerate(available_games['game_list']):
             main_menu_items.append((game, i))
+
         main_menu = text_menu.Menu(main_menu_items, screen)
+
         main_menu.display()
         curses.curs_set(1)
         curses.endwin()
+        print(f'>>>> {x}')
         self.selection = main_menu.selection
         return main_menu.selection
 
@@ -85,10 +93,7 @@ class TextClient:
         put together.
         """
         rc = self.send_game_selection_to_server(self.selection)
-        if rc == 200:
-            print("Okidoki")
-        else:
-            print("Nokidoki")
+        return rc
 
     def temp_get_game_information(self):
         r = requests.get(self.server_ip + '/get_game_status')
@@ -107,9 +112,11 @@ class TextClient:
 
 if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
+    print(time.time())
     tc.temp_user_game_selection()
+    print(time.time())    
     tc.temp_user_pick_game()
-    
+
     game_information = tc.temp_get_game_information()
     print(type(game_information))
     game_counter = game_information['game_status']['remaining']
@@ -119,7 +126,6 @@ if __name__ == "__main__":  # pragma: nocover
     layout.screen_init()
     layout.show_keyboard()
     layout.screen.refresh()
-    time.sleep(10)
     layout.screen_deinit()
 
     while game_counter > 0:
