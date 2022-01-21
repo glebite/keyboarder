@@ -67,14 +67,13 @@ class TextClient:
         """temp_user_game_selection - temporary until display mechanism is
         put together.
         """
-        print(f'>>> {time.time()}')
+        import pdb; pdb.set_trace()
         available_games = self.get_games_from_server()
-        print(f'>>> {time.time()}')
+        y = time.time()
         screen = curses.initscr()
-        x = time.time()        
         curses.curs_set(0)
+        x = time.time()
         main_menu_items = list()
-
 
         for i, game in enumerate(available_games['game_list']):
             main_menu_items.append((game, i))
@@ -84,7 +83,7 @@ class TextClient:
         main_menu.display()
         curses.curs_set(1)
         curses.endwin()
-        print(f'>>>> {x}')
+        print(f'>>>> Time to init screen {x-y}')
         self.selection = main_menu.selection
         return main_menu.selection
 
@@ -114,7 +113,7 @@ if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
     print(time.time())
     tc.temp_user_game_selection()
-    print(time.time())    
+    print(time.time())
     tc.temp_user_pick_game()
 
     game_information = tc.temp_get_game_information()

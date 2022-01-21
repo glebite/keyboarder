@@ -24,7 +24,6 @@ class Menu(object):
         self.position = 0
         self.items = items
         self.items.append(("exit", "exit"))
-        time.sleep(10)
 
     def navigate(self, n):
         """
