@@ -42,9 +42,7 @@ class TextClient:
     def get_games_from_server(self):
         """get_games_from_server(self):
         """
-        print('Going to send a get to get a list of games')
         r = requests.get(self.server_ip + '/list_games')
-        print(r.text)
         return json.loads(r.text)
 
     def send_game_selection_to_server(self, game):
@@ -92,7 +90,6 @@ class TextClient:
 
     def temp_get_game_information(self):
         r = requests.get(self.server_ip + '/get_game_status')
-        print(f'Game information: {r.text}')
         return json.loads(r.text)
 
     def temp_get_game_data(self):
@@ -107,13 +104,10 @@ class TextClient:
 
 if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
-    print(time.time())
     tc.temp_user_game_selection()
-    print(time.time())
     tc.temp_user_pick_game()
 
     game_information = tc.temp_get_game_information()
-    print(type(game_information))
     game_counter = game_information['game_status']['remaining']
 
     stuff = tc.temp_get_game_data()
@@ -123,14 +117,19 @@ if __name__ == "__main__":  # pragma: nocover
     layout.screen.refresh()
     layout.placeit(50, 5,  'match the key for')
     layout.screen.refresh()
-    time.sleep(5)
-    layout.screen_deinit()
 
-    # while game_counter > 0:
-    #     r = tc.get_key_data()
-    #     target_char = json.loads(r.text)['target']
-    #     layout.placeit(5, 50, f'match the key for {target_char}')
-    #     host_key = input()
-    #     print(tc.send_key(host_key))
-    #     game_information = tc.temp_get_game_information()
-    #     game_counter = game_information['game_status']['remaining']
+    while game_counter > 0:
+        r = tc.get_key_data()
+        target_char = json.loads(r.text)['target']
+        layout.placeit(50, 5, f'match the key for {target_char}')
+        host_key = layout.screen.getch()
+        x = tc.send_key(host_key)
+        game_information = tc.temp_get_game_information()
+        game_counter = game_information['game_status']['remaining']
+        layout.screen.refresh()
+        layout.placeit(50, 6, f'remaining guesses: {game_counter:4}')
+        success = game_information['game_status']['scores']['success']
+        fail = game_information['game_status']['scores']['fail']
+        layout.placeit(50, 7, f'scores: {success:4} vs {fail:4}')
+
+    layout.screen_deinit()
