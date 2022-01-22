@@ -121,13 +121,16 @@ if __name__ == "__main__":  # pragma: nocover
     layout.screen_init()
     layout.show_keyboard()
     layout.screen.refresh()
+    layout.placeit(50, 5,  'match the key for')
+    layout.screen.refresh()
+    time.sleep(5)
     layout.screen_deinit()
 
-    while game_counter > 0:
-        r = tc.get_key_data()
-        target_char = json.loads(r.text)['target']
-        print(f'match the key for {target_char}')
-        host_key = input()
-        print(tc.send_key(host_key))
-        game_information = tc.temp_get_game_information()
-        game_counter = game_information['game_status']['remaining']
+    # while game_counter > 0:
+    #     r = tc.get_key_data()
+    #     target_char = json.loads(r.text)['target']
+    #     layout.placeit(5, 50, f'match the key for {target_char}')
+    #     host_key = input()
+    #     print(tc.send_key(host_key))
+    #     game_information = tc.temp_get_game_information()
+    #     game_counter = game_information['game_status']['remaining']
