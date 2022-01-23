@@ -133,3 +133,8 @@ if __name__ == "__main__":  # pragma: nocover
         layout.placeit(50, 7, f'scores: {success:4} vs {fail:4}')
 
     layout.screen_deinit()
+
+    game_information = tc.temp_get_game_information()
+    success = game_information['game_status']['scores']['success']
+    fail = game_information['game_status']['scores']['fail']
+    print(f'scores: {success:4} vs {fail:4}')
