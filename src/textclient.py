@@ -79,7 +79,7 @@ class TextClient:
         curses.curs_set(1)
         curses.endwin()
         self.selection = main_menu.selection
-        return main_menu.selection
+        return self.selection
 
     def temp_user_pick_game(self):
         """temp_user_pick_game - temporary until display mechanism is
@@ -104,7 +104,10 @@ class TextClient:
 
 if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
-    tc.temp_user_game_selection()
+    selection = tc.temp_user_game_selection()
+    if not selection:
+        sys.exit(0)
+
     tc.temp_user_pick_game()
 
     game_information = tc.temp_get_game_information()
