@@ -154,8 +154,8 @@ class GameEngine(Flask):
     def list_game_handler_rule(self):
         print(f"Getting a list of games from {self.data['game_config_path']}")
         files = glob(self.data['game_config_path'] + '/game_*.cfg')
-        print(files)
-        return {'status_code': 200, 'game_list': list(files)}
+        filter = [f_name for f_name in files if 'test' not in f_name]
+        return {'status_code': 200, 'game_list': list(filter)}
 
     # from GET | POST /gamechoice
     def game_choice_rule(self):
