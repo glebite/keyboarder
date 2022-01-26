@@ -61,9 +61,8 @@ class TextClient:
                           json={"game_choice": game})
         return r
 
-    def temp_user_game_selection(self):
-        """temp_user_game_selection - temporary until display mechanism is
-        put together.
+    def user_game_selection(self):
+        """user_game_selection - display/dropdown is put together.
         """
         available_games = self.get_games_from_server()
         screen = curses.initscr()
@@ -81,9 +80,8 @@ class TextClient:
         self.selection = main_menu.selection
         return self.selection
 
-    def temp_user_pick_game(self):
-        """temp_user_pick_game - temporary until display mechanism is
-        put together.
+    def user_pick_game(self):
+        """user_pick_game - send game selection to the server
         """
         rc = self.send_game_selection_to_server(self.selection)
         return rc
@@ -104,11 +102,11 @@ class TextClient:
 
 if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
-    selection = tc.temp_user_game_selection()
+    selection = tc.user_game_selection()
     if not selection:
         sys.exit(0)
 
-    tc.temp_user_pick_game()
+    tc.user_pick_game()
 
     game_information = tc.temp_get_game_information()
     game_counter = game_information['game_status']['remaining']
