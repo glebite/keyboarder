@@ -99,43 +99,48 @@ class TextClient:
                           json={"host_key": value})
         return r.text
 
+    def game_play(self):
+        """
+        """
+        selection = self.user_game_selection()
+        if not selection:
+            sys.exit(0)
+
+        self.user_pick_game()
+
+        game_information = self.temp_get_game_information()
+        game_counter = game_information['game_status']['remaining']
+
+        stuff = self.temp_get_game_data()
+        layout = Layout(stuff['host_kbd'])
+        layout.screen_init()
+        layout.show_keyboard()
+        layout.screen.refresh()
+        layout.placeit(50, 5,  'maselfh the key for')
+        layout.screen.refresh()
+
+        while game_counter > 0:
+            r = self.get_key_data()
+            target_char = json.loads(r.text)['target']
+            layout.placeit(50, 5, f'maselfh the key for {target_char}')
+            host_key = layout.screen.geselfh()
+            self.send_key(host_key)
+            game_information = self.temp_get_game_information()
+            game_counter = game_information['game_status']['remaining']
+            layout.screen.refresh()
+            layout.placeit(50, 6, f'remaining guesses: {game_counter:4}')
+            success = game_information['game_status']['scores']['success']
+            fail = game_information['game_status']['scores']['fail']
+            layout.placeit(50, 7, f'scores: {success:4} vs {fail:4}')
+
+        layout.screen_deinit()
+
+        game_information = self.temp_get_game_information()
+        success = game_information['game_status']['scores']['success']
+        fail = game_information['game_status']['scores']['fail']
+        print(f'scores: {success:4} vs {fail:4}')
+
 
 if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
-    selection = tc.user_game_selection()
-    if not selection:
-        sys.exit(0)
-
-    tc.user_pick_game()
-
-    game_information = tc.temp_get_game_information()
-    game_counter = game_information['game_status']['remaining']
-
-    stuff = tc.temp_get_game_data()
-    layout = Layout(stuff['host_kbd'])
-    layout.screen_init()
-    layout.show_keyboard()
-    layout.screen.refresh()
-    layout.placeit(50, 5,  'match the key for')
-    layout.screen.refresh()
-
-    while game_counter > 0:
-        r = tc.get_key_data()
-        target_char = json.loads(r.text)['target']
-        layout.placeit(50, 5, f'match the key for {target_char}')
-        host_key = layout.screen.getch()
-        x = tc.send_key(host_key)
-        game_information = tc.temp_get_game_information()
-        game_counter = game_information['game_status']['remaining']
-        layout.screen.refresh()
-        layout.placeit(50, 6, f'remaining guesses: {game_counter:4}')
-        success = game_information['game_status']['scores']['success']
-        fail = game_information['game_status']['scores']['fail']
-        layout.placeit(50, 7, f'scores: {success:4} vs {fail:4}')
-
-    layout.screen_deinit()
-
-    game_information = tc.temp_get_game_information()
-    success = game_information['game_status']['scores']['success']
-    fail = game_information['game_status']['scores']['fail']
-    print(f'scores: {success:4} vs {fail:4}')
+    tc.game_play()
