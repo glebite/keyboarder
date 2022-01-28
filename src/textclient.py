@@ -100,7 +100,8 @@ class TextClient:
         return r.text
 
     def game_play(self):
-        """
+        """game_play - method for playing the game - literally just 
+        send/receive and operate off of which
         """
         selection = self.user_game_selection()
         if not selection:
@@ -116,14 +117,14 @@ class TextClient:
         layout.screen_init()
         layout.show_keyboard()
         layout.screen.refresh()
-        layout.placeit(50, 5,  'maselfh the key for')
+        layout.placeit(50, 5,  'press the key for    ')
         layout.screen.refresh()
 
         while game_counter > 0:
             r = self.get_key_data()
             target_char = json.loads(r.text)['target']
-            layout.placeit(50, 5, f'maselfh the key for {target_char}')
-            host_key = layout.screen.geselfh()
+            layout.placeit(50, 5, f'press the key for {target_char}')
+            host_key = layout.screen.refresh()
             self.send_key(host_key)
             game_information = self.temp_get_game_information()
             game_counter = game_information['game_status']['remaining']
@@ -135,6 +136,7 @@ class TextClient:
 
         layout.screen_deinit()
 
+    def final_output(self):
         game_information = self.temp_get_game_information()
         success = game_information['game_status']['scores']['success']
         fail = game_information['game_status']['scores']['fail']
@@ -144,3 +146,4 @@ class TextClient:
 if __name__ == "__main__":  # pragma: nocover
     tc = TextClient(sys.argv[1])
     tc.game_play()
+    tc.final_output()
