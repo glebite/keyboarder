@@ -124,7 +124,7 @@ class TextClient:
             r = self.get_key_data()
             target_char = json.loads(r.text)['target']
             layout.placeit(50, 5, f'press the key for {target_char}')
-            host_key = layout.screen.refresh()
+            host_key = layout.screen.getch()
             self.send_key(host_key)
             game_information = self.temp_get_game_information()
             game_counter = game_information['game_status']['remaining']
