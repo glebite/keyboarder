@@ -2,7 +2,6 @@ import requests
 import sys
 import json
 from layout2 import Layout
-import time
 import text_menu
 import curses
 
@@ -86,11 +85,11 @@ class TextClient:
         rc = self.send_game_selection_to_server(self.selection)
         return rc
 
-    def temp_get_game_information(self):
+    def get_game_information(self):
         r = requests.get(self.server_ip + '/get_game_status')
         return json.loads(r.text)
 
-    def temp_get_game_data(self):
+    def get_game_data(self):
         r = requests.get(self.server_ip + '/get_game_data')
         return json.loads(r.text)
 
@@ -100,7 +99,7 @@ class TextClient:
         return r.text
 
     def game_play(self):
-        """game_play - method for playing the game - literally just 
+        """game_play - method for playing the game - literally just
         send/receive and operate off of which
         """
         selection = self.user_game_selection()
@@ -109,10 +108,10 @@ class TextClient:
 
         self.user_pick_game()
 
-        game_information = self.temp_get_game_information()
+        game_information = self.get_game_information()
         game_counter = game_information['game_status']['remaining']
 
-        stuff = self.temp_get_game_data()
+        stuff = self.get_game_data()
         layout = Layout(stuff['host_kbd'])
         layout.screen_init()
         layout.show_keyboard()
@@ -126,7 +125,7 @@ class TextClient:
             layout.placeit(50, 5, f'press the key for {target_char}')
             host_key = layout.screen.getch()
             self.send_key(host_key)
-            game_information = self.temp_get_game_information()
+            game_information = self.get_game_information()
             game_counter = game_information['game_status']['remaining']
             layout.screen.refresh()
             layout.placeit(50, 6, f'remaining guesses: {game_counter:4}')
