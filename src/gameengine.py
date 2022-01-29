@@ -252,10 +252,12 @@ class GameEngine(Flask):
         data = json.loads(request.get_data())
         print(f'Data received: {data}')
         self.game_status['remaining'] -= 1
-        if data['host_key'] == self.game_status['current_host']:
+        if chr(data['host_key']) == self.game_status['current_host']:
             self.game_status['scores']['success'] += 1
+            print(self.game_status['scores']['success'])
             return {'success': True}, 200
         else:
+            print(f"Fail: {data['host_key']} {self.game_status['current_host']}")
             self.game_status['scores']['fail'] += 1
             return {'success': False}, 200
 
