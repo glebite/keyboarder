@@ -136,7 +136,7 @@ class TextClient:
         layout.screen_deinit()
 
     def final_output(self):
-        game_information = self.temp_get_game_information()
+        game_information = self.get_game_information()
         success = game_information['game_status']['scores']['success']
         fail = game_information['game_status']['scores']['fail']
         print(f'scores: {success:4} vs {fail:4}')
