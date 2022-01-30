@@ -152,7 +152,6 @@ class GameEngine(Flask):
 
     # from GET /listgames
     def list_game_handler_rule(self):
-        print(f"Getting a list of games from {self.data['game_config_path']}")
         files = glob(self.data['game_config_path'] + '/game_*.cfg')
         filter = [f_name for f_name in files if 'test' not in f_name]
         return {'status_code': 200, 'game_list': list(filter)}
@@ -163,7 +162,6 @@ class GameEngine(Flask):
         if method == 'GET':
             return str(self.game_chosen), 200
         elif method == 'POST':
-            print(f'Posting: {request.get_data()}')
             data = json.loads(request.get_data())
             self.game_chosen = data['game_choice']
             self.reset_game_status()
@@ -192,7 +190,6 @@ class GameEngine(Flask):
         try:
             self.cfg_parser.read_file(open(self.game_file, 'r'))
         except FileNotFoundError:
-            print(f'Sorry - file not found... {self.game_file}')
             raise FileNotFoundError
         except DuplicateSectionError as e:
             raise e
@@ -250,14 +247,11 @@ class GameEngine(Flask):
 
     def receive_key_rule(self):
         data = json.loads(request.get_data())
-        print(f'Data received: {data}')
         self.game_status['remaining'] -= 1
         if chr(data['host_key']) == self.game_status['current_host']:
             self.game_status['scores']['success'] += 1
-            print(self.game_status['scores']['success'])
             return {'success': True}, 200
         else:
-            print(f"Fail: {data['host_key']} {self.game_status['current_host']}")
             self.game_status['scores']['fail'] += 1
             return {'success': False}, 200
 
