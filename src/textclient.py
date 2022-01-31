@@ -98,9 +98,17 @@ class TextClient:
                           json={"host_key": value})
         return r.text
 
+    def draw_first_screen(self, game_data):
+        self.layout = Layout(game_data['host_kbd'])
+        self.layout.screen_init()
+        self.layout.show_keyboard()
+        self.layout.screen.refresh()
+        self.layout.placeit(50, 5,  'press the key for    ')
+        self.layout.screen.refresh()        
+    
     def game_play(self):
         """game_play - method for playing the game - literally just
-        send/receive and operate off of which
+        send/receive and operate off of which server it's pointing to.
         """
         selection = self.user_game_selection()
         if not selection:
@@ -111,29 +119,26 @@ class TextClient:
         game_information = self.get_game_information()
         game_counter = game_information['game_status']['remaining']
 
-        stuff = self.get_game_data()
-        layout = Layout(stuff['host_kbd'])
-        layout.screen_init()
-        layout.show_keyboard()
-        layout.screen.refresh()
-        layout.placeit(50, 5,  'press the key for    ')
-        layout.screen.refresh()
+        # TODO: move this out - as well as the display side of things.
+        game_data = self.get_game_data()
+        self.draw_first_screen(game_data)
 
+        # TODO: refactor this - should be get character, update screen
         while game_counter > 0:
             r = self.get_key_data()
             target_char = json.loads(r.text)['target']
-            layout.placeit(50, 5, f'press the key for {target_char}')
-            host_key = layout.screen.getch()
+            self.layout.placeit(50, 5, f'press the key for {target_char}')
+            host_key = self.layout.screen.getch()
             self.send_key(host_key)
             game_information = self.get_game_information()
             game_counter = game_information['game_status']['remaining']
-            layout.screen.refresh()
-            layout.placeit(50, 6, f'remaining guesses: {game_counter:4}')
+            self.layout.screen.refresh()
+            self.layout.placeit(50, 6, f'remaining guesses: {game_counter:4}')
             success = game_information['game_status']['scores']['success']
             fail = game_information['game_status']['scores']['fail']
-            layout.placeit(50, 7, f'scores: {success:4} vs {fail:4}')
+            self.layout.placeit(50, 7, f'scores: {success:4} vs {fail:4}')
 
-        layout.screen_deinit()
+        self.layout.screen_deinit()
 
     def final_output(self):
         game_information = self.get_game_information()
