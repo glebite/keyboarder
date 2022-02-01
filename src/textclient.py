@@ -104,8 +104,8 @@ class TextClient:
         self.layout.show_keyboard()
         self.layout.screen.refresh()
         self.layout.placeit(50, 5,  'press the key for    ')
-        self.layout.screen.refresh()        
-    
+        self.layout.screen.refresh()
+
     def game_play(self):
         """game_play - method for playing the game - literally just
         send/receive and operate off of which server it's pointing to.
