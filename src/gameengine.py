@@ -246,6 +246,11 @@ class GameEngine(Flask):
         return self.game_data
 
     def receive_key_rule(self):
+        """receive_key_rule - handler for accepting a key from the client
+
+        Note: game scoring is performed here.  Things will have to change
+              if the intent is to learn how to type words.
+        """
         data = json.loads(request.get_data())
         self.game_status['remaining'] -= 1
         if chr(data['host_key']) == self.game_status['current_host']:
