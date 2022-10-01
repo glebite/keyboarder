@@ -13,30 +13,33 @@ I am lousy at developing GUI applications and I normally despise using something
 Congratulations: you have looked at this file as well as possibly cloned it.  I thank you.
 
 1) Retrieve the repository (you may have already done this):  
-$ git clone https://github.com/glebite/keyboarder.git
+>$ git clone https://github.com/glebite/keyboarder.git
 
 2) Change directories to the keyboarder file structure:  
-$ cd keyboarder
+> $ cd keyboarder
 
 3) Using python3 (yes you will need python3) you will reconsitute the virutal environment:  
 (go here for instructions: [Real Python Installation Instructions](https://realpython.com/installing-python/)  
-$ python3 -m pip install -r requirements.txt
+> $ python3 -m pip install -r requirements.txt  
 
-4) Activate your virtual environment for keyboarder:  
-$ source venv/bin/activate
+4) Create a virtual environment:  
+> $ python3 -m venv venv
 
-5) Get to and execute 'game':  
-$ cd src  
-$ python3 game.py ../data/game_1.cfg
+5) Activate your virtual environment for keyboarder:  
+> $ source venv/bin/activate  
 
-6) Enjoy what it is for now:
+6) Get to and execute 'game':  
+> $ cd src  
+> $ python3 game.py ../data/game_1.cfg
+
+7) Enjoy what it is for now:
 ![In Action!](./images/keyplayerinaction.png)  
 
-7) Deactivate your virtual environment  
-$ deactivate
+8) Deactivate your virtual environment  
+> $ deactivate
 
-8) Clap and celebrate having had some fun and trying this out  
-$ sudo human --action celebrate
+9) Clap and celebrate having had some fun and trying this out  
+> $ sudo human --action celebrate
 
 ## What is next?  
 
